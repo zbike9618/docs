@@ -13,7 +13,7 @@ export default defineConfig({
       { text: '不具合情報', link: '/report/status' }
     ],
     socialLinks: [
-      { icon: 'discord', link: 'https://discord.gg/your-link' }
+      { icon: 'discord', link: 'https://discord.gg/2Cx8Xm4ws6' }
     ]
   }
 })
