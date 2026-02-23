@@ -7,8 +7,9 @@
 ゲーム内で予期せぬ動作を見つけた場合は、以下のフォームからご報告ください。
 報告された内容は自動的に運営のDiscordに通知され、迅速に確認されます。
 
-> **[📝 クリックしてバグ報告用Googleフォームを開く](#)**  
-> *(※ ここに後で作成したGoogleフォームのURLを貼り付けます)*
+> **[📝 バグ報告用Googleフォームを開く](https://docs.google.com/forms/d/e/1FAIpQLSeE9TciAWkxBkpSgZDsVDoqryL0rXnhtmEUaAvt9V6Sm8AYAg/viewform?usp=publish-editor)**
+
+<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeE9TciAWkxBkpSgZDsVDoqryL0rXnhtmEUaAvt9V6Sm8AYAg/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…</iframe>
 
 ### 💡 報告時のポイント
 対応をスムーズに行うため、以下の情報を詳しく書いていただけると助かります。

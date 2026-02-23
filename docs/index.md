@@ -2,8 +2,8 @@
 layout: home
 
 hero:
-  name: "CountryWars"
-  text: "国家の興亡、すべてはあなたの手に。"
+  name: "建国鯖"
+  text: ""
   tagline: 統合版マイクラ専用・24時間稼働の建国戦争サーバー
   actions:
     - theme: brand
