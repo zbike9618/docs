@@ -2,7 +2,7 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  base: '/server_webpage/', // 【追加】リポジトリ名を / で囲む
+  base: '/docs/', // リポジトリ名が docs の場合はこれ
   title: "CountryWars Official",
   srcDir: '.',
   themeConfig: {
