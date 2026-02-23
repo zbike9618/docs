@@ -37,3 +37,10 @@
 <br>
 
 *(ステータス：🔴 未解決 / 🟠 対応中 / 🟡 確認済(次回修正) / 🟢 修正済み / ⚪ 仕様)*
+
+<style>
+.vp-doc table th,
+.vp-doc table td {
+  white-space: nowrap;
+}
+</style>
