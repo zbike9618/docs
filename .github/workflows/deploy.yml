@@ -17,28 +17,24 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-          # package.jsonがある場所を指定（リポジトリ直下なら削除、docs内なら以下）
-          cache-dependency-path: docs/package.json
+          cache: npm # package.jsonが直下にあるのでキャッシュが効きます
 
       - name: Install dependencies
-        # ここで docs フォルダに移動してインストール
         run: npm install
-        working-directory: docs
 
       - name: Build with VitePress
-        # ここで docs フォルダに移動してビルド
-        run: npx vitepress build .
-        working-directory: docs
+        # package.jsonが直下、ソースファイルがdocsフォルダ内にある場合のビルドコマンド
+        run: npx vitepress build docs
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # 生成される dist フォルダの正確な場所を指定
+          # ビルド結果（dist）の場所を正確に指定
           path: docs/.vitepress/dist
 
   deploy:
