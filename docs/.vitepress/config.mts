@@ -8,6 +8,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: 'ホーム', link: '/' },
+      { text: 'お知らせ', link: '/news' },
       { text: '遊び方ガイド', link: '/guide/start' },
       { text: '不具合情報', link: '/report/status' }
     ],
