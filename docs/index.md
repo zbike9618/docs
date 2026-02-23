@@ -22,6 +22,12 @@ features:
     details: Ubuntu/Proxmox環境で、ラグの少ない快適な環境を提供します。
 ---
 
+<script setup>
+import ServerStatus from './components/ServerStatus.vue'
+</script>
+
+<ServerStatus />
+
 ## 📢 最新のお知らせ
 
 - **2026/02/23:** 📝 [サーバー名募集アンケートを開始しました](/form)
