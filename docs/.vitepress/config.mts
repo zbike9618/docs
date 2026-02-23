@@ -10,6 +10,7 @@ export default defineConfig({
       { text: 'ホーム', link: '/' },
       { text: 'お知らせ', link: '/news' },
       { text: '遊び方ガイド', link: '/guide/start' },
+      { text: 'サーバー名募集', link: '/form' },
       { text: '不具合情報', link: '/report/status' }
     ],
     socialLinks: [
