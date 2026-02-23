@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   base: '/docs/', // リポジトリ名が docs の場合はこれ
-  title: "CountryWars Official",
+  title: "建国鯖",
   srcDir: '.',
   themeConfig: {
     nav: [
