@@ -24,14 +24,13 @@ features:
 
 <script setup>
 import ServerStatus from './components/ServerStatus.vue'
+import NewsList from './components/NewsList.vue'
 </script>
 
 <ServerStatus />
 
 ## 📢 最新のお知らせ
 
-- **2026/02/23:** 📝 [サーバー名募集アンケートを開始しました](/form)
-- **2026/02/23:** 🐛 [バグ報告用のGoogleフォームを設置しました](/report/status)
-- **2026/02/23:** 📝 [webページを解放しました]
+<NewsList :limit="3" />
 
 👉 [これまでのお知らせ一覧を見る](/news)
