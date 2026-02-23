@@ -44,8 +44,8 @@ const fetchStatus = async () => {
     
     isOnline.value = data.online
     if (data.online) {
-      players.value = data.players.online
-      maxPlayers.value = data.players.max
+      players.value = data.players?.online ?? 0
+      maxPlayers.value = data.players?.max ?? '?'
     }
   } catch (error) {
     console.error('サーバー状態の取得に失敗しました', error)
