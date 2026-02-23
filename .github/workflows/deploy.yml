@@ -28,8 +28,9 @@ jobs:
         run: npm install
 
       - name: Build with VitePress
-        # package.jsonが直下、ソースファイルがdocsフォルダ内にある場合のビルドコマンド
-        run: npx vitepress build docs
+        # package.json の scripts にある docs:build を実行します
+        # これにより、権限問題を npm が内部で解決してくれます
+        run: npm run docs:build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
