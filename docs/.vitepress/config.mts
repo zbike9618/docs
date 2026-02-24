@@ -6,6 +6,7 @@ export default defineConfig({
   title: "建国鯖",
   srcDir: '.',
   themeConfig: {
+    logo: '/yuku5_icon.jpg',
     nav: [
       { text: 'ホーム', link: '/' },
       { text: 'お知らせ', link: '/news' },
