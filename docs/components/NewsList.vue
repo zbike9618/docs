@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue'
+import { withBase } from 'vitepress'
 import newsData from '../.vitepress/news.json'
 
 const props = defineProps({
@@ -18,7 +19,7 @@ const displayNews = computed(() => {
   <ul class="news-list">
     <li v-for="(item, index) in displayNews" :key="index">
       <strong>{{ item.date }}:</strong>
-      <a v-if="item.link" :href="item.link">{{ item.text }}</a>
+      <a v-if="item.link" :href="withBase(item.link)">{{ item.text }}</a>
       <span v-else>{{ item.text }}</span>
     </li>
   </ul>
