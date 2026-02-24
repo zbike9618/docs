@@ -5,9 +5,6 @@ hero:
   name: "建国鯖"
   text: ""
   tagline: 統合版マイクラ専用・24時間稼働の建国戦争サーバー
-  image:
-    src: /yuku5_icon.jpg
-    alt: 建国鯖ロゴ
   actions:
     - theme: brand
       text: サーバーに参加する
