@@ -12,6 +12,9 @@ hero:
     - theme: alt
       text: バグ報告を行う
       link: /report/status
+    - theme: alt
+      text: コマンド一覧
+      link: /guide/commands
 
 features:
   - title: 🚩 本格的な建国システム
