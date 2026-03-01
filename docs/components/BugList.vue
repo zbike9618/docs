@@ -1,6 +1,9 @@
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import bugData from '../.vitepress/bugs.json'
+
+// すべてのバグを表示するかどうかを管理する変数（初期値はfalse）
+const showAll = ref(false)
 
 const displayBugs = computed(() => {
   const activeBugs = []
@@ -15,12 +18,22 @@ const displayBugs = computed(() => {
     }
   }
 
+  // showAllがtrue（すべて表示する状態）なら全件返す
+  if (showAll.value) {
+    return [...activeBugs, ...fixedBugs]
+  }
+
   // 修正済みのものは最新の3件のみ取得
   const limitedFixedBugs = fixedBugs.slice(0, 3)
 
   // 対応中などを上に、修正済みを下に表示する
   return [...activeBugs, ...limitedFixedBugs]
 })
+
+// ボタンをクリックした時に実行される関数（現在の状態を反転させる）
+const toggleShowAll = () => {
+  showAll.value = !showAll.value
+}
 </script>
 
 <template>
@@ -45,6 +58,12 @@ const displayBugs = computed(() => {
         </tr>
       </tbody>
     </table>
+    <!-- すべて見る/一部だけ見る を切り替えるボタン -->
+    <div class="button-container">
+      <button class="toggle-button" @click="toggleShowAll">
+        {{ showAll ? '表示を減らす' : 'すべてのバグを見る' }}
+      </button>
+    </div>
   </div>
 </template>
 
@@ -55,5 +74,20 @@ const displayBugs = computed(() => {
 .bug-table-container table th,
 .bug-table-container table td {
   white-space: nowrap;
+}
+.button-container {
+  margin-top: 16px;
+  text-align: center;
+}
+.toggle-button {
+  padding: 8px 16px;
+  background-color: var(--vp-c-brand);
+  color: white;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: opacity 0.2s;
+}
+.toggle-button:hover {
+  opacity: 0.8;
 }
 </style>
