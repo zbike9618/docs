@@ -57,3 +57,25 @@ CountryWars内で使用できるコマンドの一覧です。
 一部のコマンドには「簡略化（短いコマンド）」が用意されています。
 例えば `/makecountry` と入力する代わりに `/mc` と入力するだけで、同じように機能を使えるのでとても便利です！
 :::
+
+<style>
+/* スマホなどの細い画面でテーブルの文字が縦に1文字ずつ改行されるのを防ぐ設定 */
+.vp-doc table th:nth-child(1), .vp-doc table td:nth-child(1),
+.vp-doc table th:nth-child(2), .vp-doc table td:nth-child(2),
+.vp-doc table th:nth-child(4), .vp-doc table td:nth-child(4) {
+  white-space: nowrap; /* コマンド、タイトル、簡略化 カウンムは途中で改行しない */
+}
+
+/* 説明文のカラムは最低限の幅を確保して読みやすくする */
+.vp-doc table th:nth-child(3), .vp-doc table td:nth-child(3) {
+  min-width: 15vw; /* 画面幅に対して最低でも15%の幅を確保 */
+  word-break: normal; /* 不自然な場所での改行を防ぐ */
+}
+
+/* テーブル全体を横スクロールしやすくする（念のため） */
+.vp-doc table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+</style>
