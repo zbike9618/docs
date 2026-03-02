@@ -1,5 +1,10 @@
 [
     {
+        "date": "2026/03/03",
+        "text": "【22時〜 メンテナンス実施】",
+        "link": "/news/maintenance20260302"
+    },
+    {
         "date": "2026/02/26",
         "text": "コマンド一覧ページを作成しました",
         "link": "/guide/commands"
