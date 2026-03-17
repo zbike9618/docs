@@ -1,4 +1,7 @@
 node_modules/
-docs/.vitepress/dist/
-docs/.vitepress/cache/
+docs/.vitepress/
 .DS_Store
+package-lock.json
+docs/.vitepress/news.json
+docs/.vitepress/cache/deps/_metadata.json
+docs/.vitepress/cache/deps/@theme_index.js
