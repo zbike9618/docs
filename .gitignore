@@ -1,5 +1,5 @@
 node_modules/
-docs/.vitepress/
+docs/.vitepress/cache
 .DS_Store
 package-lock.json
 docs/.vitepress/news.json

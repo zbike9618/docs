@@ -12,7 +12,8 @@ export default defineConfig({
       { text: 'お知らせ', link: '/news' },
       { text: '遊び方ガイド', link: '/guide/start' },
       { text: 'サーバー名募集', link: '/form' },
-      { text: '不具合情報', link: '/report/status' }
+      { text: '不具合情報', link: '/report/status' },
+      { text: '処罰履歴', link: '/banlist/' }
     ],
     socialLinks: [
       { icon: 'discord', link: 'https://discord.gg/2Cx8Xm4ws6' }
