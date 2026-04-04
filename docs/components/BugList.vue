@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import bugData from '../.vitepress/bugs.jsonc'
+import bugData from '../.vitepress/bugs.json'
 
 // すべてのバグを表示するかどうかを管理する変数（初期値はfalse）
 const showAll = ref(false)
