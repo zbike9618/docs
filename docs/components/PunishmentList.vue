@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import punishmentData from '../.vitepress/punishments.json'
-import currentSeasonRaw from '../.vitepress/.stuatus?raw'
+import currentSeasonRaw from '../.vitepress/.status?raw'
 
 const currentSeason = computed(() => currentSeasonRaw.trim())
 
