@@ -4,7 +4,7 @@ outline: deep
 
 # 📝 サーバー名募集アンケート
 
-新しいMinecraftサーバーの名前を皆さまから募集しています！
+建国鯖の名前を皆さまから募集しています！
 ぜひ、あなたの考えた素敵な名前を教えてください。
 
 > **[📝 アンケートフォームを別のタブで開く](https://docs.google.com/forms/d/e/1FAIpQLSc600V9jH-Eka_zf56vzWvY1_49kHOhCqL2VbqbOgAc53tmxQ/viewform?usp=publish-editor)**
