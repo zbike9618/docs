@@ -50,9 +50,9 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           echo "StrictHostKeyChecking no" >> ~/.ssh/config
 
-      # 3. サブネットルーター経由でLXCへデプロイ
+      # 3. サブネットルーター経由でLXCへデプロイ（末尾に /docs を追加！）
       - name: Deploy to LXC via rsync
-        run: rsync -avz --delete docs/.vitepress/dist/ ${{ secrets.LXC_USER }}@192.168.11.120:/var/www/html/
+        run: rsync -avz --delete docs/.vitepress/dist/ ${{ secrets.LXC_USER }}@192.168.11.120:/var/www/html/docs/
 
   deploy-pages:
     environment:
