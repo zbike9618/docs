@@ -35,13 +35,12 @@ jobs:
         with:
           path: docs/.vitepress/dist
 
-      # 1. Tailscale に接続
+      # 1. Tailscale に接続（--accept-routes を追加してサブネットルーターのルートを受信）
       - name: Connect to Tailscale
         uses: tailscale/github-action@v2
         with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          args: --accept-routes
 
       # 2. SSHの秘密鍵を設定
       - name: Setup SSH
@@ -51,7 +50,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           echo "StrictHostKeyChecking no" >> ~/.ssh/config
 
-      # 3. サブネットルーター経由でLXCへデプロイ（改行や余計なクォーテーションを完全に排除した書き方）
+      # 3. サブネットルーター経由でLXCへデプロイ
       - name: Deploy to LXC via rsync
         run: rsync -avz --delete docs/.vitepress/dist/ ${{ secrets.LXC_USER }}@192.168.11.120:/var/www/html/
 
