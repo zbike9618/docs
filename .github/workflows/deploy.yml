@@ -1,16 +1,17 @@
-name: Deploy VitePress site to Pages
+name: Deploy VitePress site to Pages & Local LXC
 
 on:
   push:
     branches: [main]
 
+# GitHub Pagesへのデプロイに必要な権限
 permissions:
   contents: read
   pages: write
   id-token: write
 
 jobs:
-  build:
+  build-and-deploy-lxc:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,27 +23,46 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm # package.jsonが直下にあるのでキャッシュが効きます
+          cache: npm
 
       - name: Install dependencies
         run: npm install
 
       - name: Build with VitePress
-        # package.json の scripts にある docs:build を実行します
-        # これにより、権限問題を npm が内部で解決してくれます
         run: npm run docs:build
 
-      - name: Upload artifact
+      # GitHub Pages用のアーティファクトをアップロード
+      - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          # ビルド結果（dist）の場所を正確に指定
           path: docs/.vitepress/dist
 
-  deploy:
+      # 1. Tailscale に接続（サブネットルーター経由の通信を有効化）
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      # 2. SSHの秘密鍵を設定
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.LXC_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "StrictHostKeyChecking no" >> ~/.ssh/config
+
+      # 3. サブネットルーター経由でLXC（192.168.11.120）へデプロイ
+      - name: Deploy to LXC via rsync
+        run: |
+          rsync -avz --delete docs/.vitepress/dist/ ${{ secrets.LXC_USER }}@192.168.11.120:/var/www/html/
+
+  deploy-pages:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
+    needs: build-and-deploy-lxc
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
