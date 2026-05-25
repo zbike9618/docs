@@ -27,15 +27,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # 💡 LXCデプロイ用としてビルド（環境変数 LXC_DEPLOY: true を設定して base: '/' にする）
       - name: Build with VitePress
         run: npm run docs:build
+        env:
+          LXC_DEPLOY: true
 
       - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/.vitepress/dist
 
-      # 1. Tailscale に接続（ご指定の記述方法とキー名に統一）
+      # 1. Tailscale に接続
       - name: Tailscale
         uses: tailscale/github-action@v2
         with:
@@ -50,9 +53,9 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           echo "StrictHostKeyChecking no" >> ~/.ssh/config
 
-      # 3. サブネットルーター経由でLXCへデプロイ（末尾に /docs を追加！）
+      # 3. サブネットルーター経由でLXCへデプロイ（シンプルなhtml直下に転送）
       - name: Deploy to LXC via rsync
-        run: rsync -avz --delete docs/.vitepress/dist/ ${{ secrets.LXC_USER }}@192.168.11.120:/var/www/html/docs/
+        run: rsync -avz --delete docs/.vitepress/dist/ ${{ secrets.LXC_USER }}@192.168.11.120:/var/www/html/
 
   deploy-pages:
     environment:
