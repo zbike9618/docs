@@ -17,7 +17,13 @@ export default defineConfig({
   },
 
   head: [
-    ['link', { rel: 'icon', type: 'image/jpeg', href: 'yuku5_icon.jpg' }]
+    ['link', { rel: 'icon', type: 'image/jpeg', href: 'yuku5_icon.jpg' }],
+    // ⬇️ 追加：検索ロボットにインデックスを促す
+    ['meta', { name: 'robots', content: 'index, follow' }],
+    // ⬇️ 追加：SNSシェア時の設定（OGP）
+    ['meta', { property: 'og:title', content: '建国鯖 公式ドキュメント' }],
+    ['meta', { property: 'og:description', content: 'Minecraft建国サーバー「建国鯖」の公式ガイドサイトです。' }],
+    ['meta', { property: 'og:type', content: 'website' }]
   ],
 
   themeConfig: {
