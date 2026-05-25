@@ -38,12 +38,11 @@ jobs:
           path: docs/.vitepress/dist
 
       # 1. Tailscale に接続（サブネットルーター経由の通信を有効化）
-      - name: Connect to Tailscale
+      - name: Tailscale
         uses: tailscale/github-action@v2
         with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          args: --accept-routes  # ← これを追加
 
       # 2. SSHの秘密鍵を設定
       - name: Setup SSH
