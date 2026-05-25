@@ -35,11 +35,11 @@ jobs:
         with:
           path: docs/.vitepress/dist
 
-      # 1. Tailscale に接続（--accept-routes を追加してサブネットルーターのルートを受信）
-      - name: Connect to Tailscale
+      # 1. Tailscale に接続（ご指定の記述方法とキー名に統一）
+      - name: Tailscale
         uses: tailscale/github-action@v2
         with:
-          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          authkey: ${{ secrets.TS_OAUTH_SECRET }}
           args: --accept-routes
 
       # 2. SSHの秘密鍵を設定
