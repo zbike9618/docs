@@ -40,6 +40,3 @@ import EventBanner from './components/EventBanner.vue'
 <NewsList :limit="3" />
 
 👉 [これまでのお知らせ一覧を見る](/news)
-
-
-## テストコミット
