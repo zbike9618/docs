@@ -22,8 +22,8 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 // ▼▼▼ ここをご自身のサーバーのIPアドレス・ポート番号に変更してください ▼▼▼
-const SERVER_IP = '147.185.221.17' // 例: 192.168.0.102 等
-const SERVER_PORT = '5349'          // 統合版のデフォルトは 19132
+const SERVER_IP = 'play.gozakura.org' // 例: 192.168.0.102 等
+const SERVER_PORT = '19132'          // 統合版のデフォルトは 19132
 // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
 const isOnline = ref(false)
