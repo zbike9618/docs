@@ -7,7 +7,7 @@ const basePathes = globalEnv.GITHUB_ACTIONS && !globalEnv.LXC_DEPLOY ? '/docs/' 
 export default defineConfig({
   lang: 'ja-JP',
   base: basePathes,
-  title: "建国鯖",
+  title: "建国鯖 マインクラフト",
   description: "Minecraft建国サーバー「建国鯖」の公式ドキュメント・ガイドサイトです。ルールや遊び方をまとめています。",
 
   srcDir: '.',
