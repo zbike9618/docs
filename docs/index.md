@@ -3,8 +3,7 @@ layout: home
 
 hero:
   name: "建国鯖"
-  text: ""
-  tagline: 統合版マイクラ専用・24時間稼働の建国戦争サーバー
+  tagline: 統合版マインクラフト専用・24時間稼働の建国戦争サーバー<br>運営：ゆっくり伍桜(YouTube)
   actions:
     - theme: brand
       text: サーバーに参加する
@@ -24,6 +23,7 @@ features:
   - title: 📈 24時間安定稼働
     details: Ubuntu/Proxmox環境で、ラグの少ない快適な環境を提供します。
 ---
+
 
 <script setup>
 import ServerStatus from './components/ServerStatus.vue'

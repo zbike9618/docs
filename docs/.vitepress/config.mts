@@ -51,7 +51,8 @@ export default defineConfig({
       }
     ],
     socialLinks: [
-      { icon: 'discord', link: 'https://discord.gg/2Cx8Xm4ws6' }
+      { icon: 'discord', link: 'https://discord.gg/2Cx8Xm4ws6' },
+      { icon: 'youtube', link: 'https://www.youtube.com/@Y-gozakura' }
     ]
   },
   vite: {
