@@ -35,7 +35,7 @@ jobs:
         env:
           LXC_DEPLOY: true
 
-      # ビルドされたファイルを退避（Pages用ビルドでの上書きを防ぐ）
+      # ビルドされたファイルを退避
       - name: Copy LXC dist to separate folder
         run: cp -r docs/.vitepress/dist ./dist-lxc
 
@@ -59,8 +59,16 @@ jobs:
       # --------------------------------------------------
       # 2. GitHub Pages用のビルドとアップロード (base: '/docs/')
       # --------------------------------------------------
+      # キャッシュと前回のビルド成果物を完全に削除して、確実に再ビルドさせる
+      - name: Clean VitePress cache and dist
+        run: rm -rf docs/.vitepress/dist docs/.vitepress/.vitepress-cache
+
       - name: Build with VitePress for GitHub Pages
         run: npm run docs:build
+
+      # 念のため Pages 用にビルドされた中身があるかログで確認
+      - name: Check dist directory
+        run: ls -la docs/.vitepress/dist
 
       - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v3
