@@ -26,7 +26,7 @@ features:
 ---
 
 <script setup>
-import ServerStatus from './components/ServerStatus.vue'
+// import ServerStatus from './components/ServerStatus.vue'
 import NewsList from './components/NewsList.vue'
 import EventBanner from './components/EventBanner.vue'
 </script>

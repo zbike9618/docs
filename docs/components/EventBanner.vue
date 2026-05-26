@@ -1,5 +1,5 @@
 <template>
-  <a href="/docs/form" class="event-banner">
+  <a href="/form" class="event-banner">
     <div class="event-content">
       <div class="badge">SPECIAL EVENT</div>
       <div class="text-group">
