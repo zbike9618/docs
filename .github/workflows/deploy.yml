@@ -35,6 +35,10 @@ jobs:
         env:
           LXC_DEPLOY: true
 
+      # ビルドされたファイルを退避（Pages用ビルドでの上書きを防ぐ）
+      - name: Copy LXC dist to separate folder
+        run: cp -r docs/.vitepress/dist ./dist-lxc
+
       - name: Tailscale
         uses: tailscale/github-action@v2
         with:
@@ -48,15 +52,15 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           echo "StrictHostKeyChecking no" >> ~/.ssh/config
 
+      # 退避させたフォルダからLXCへ転送
       - name: Deploy to LXC via rsync
-        run: rsync -avz --delete docs/.vitepress/dist/ ${{ secrets.LXC_USER }}@192.168.11.120:/var/www/html/
+        run: rsync -avz --delete dist-lxc/ ${{ secrets.LXC_USER }}@192.168.11.120:/var/www/html/
 
       # --------------------------------------------------
       # 2. GitHub Pages用のビルドとアップロード (base: '/docs/')
       # --------------------------------------------------
       - name: Build with VitePress for GitHub Pages
         run: npm run docs:build
-        # envを指定しないことで、自動的に base: '/docs/' でリビルド（上書き）されます
 
       - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v3
