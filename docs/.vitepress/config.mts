@@ -8,11 +8,11 @@ export default defineConfig({
   lang: 'ja-JP',
   base: basePathes,
   
-  // 🔥 【改善】狙いたいキーワードをギュッと凝縮し、区切りに「｜」や「/」を使う
-  title: "【マイクラ】建国鯖 / 建国サーバー 公式サイト",
+  // 🔥 【修正】統合版であることを強調しつつ、狙いたいワードを網羅
+  title: "【マイクラ統合版】建国鯖 / 建国サーバー 公式サイト",
   
-  // 🔥 【改善】「統合版」や「マイクラ 建国鯖」が自然に繋がる文章に変更
-  description: "人気のマイクラ建国サーバー（建国鯖）の公式ドキュメントサイトです。統合版（Switch/スマホ等）とJava版どちらの参加方法も網羅。ルールや遊び方をまとめています。",
+  // 🔥 【修正】「統合版 建国サーバー」として認識されやすい文章に調整
+  description: "マインクラフト統合版（Switch/スマホ/PS/Xbox等）専用の建国サーバー「建国鯖」公式ドキュメントサイトです。ルールや参加方法、遊び方をまとめています。",
 
   srcDir: '.',
 
@@ -30,17 +30,18 @@ export default defineConfig({
 
     ['meta', { name: 'robots', content: 'index, follow' }],
     
-    // ⬇️ 追加：SEOをさらに盤石にするためのキーワードタグ（念のため）
+    // 🔥 【修正】キーワードタグも統合版メインに絞り込み
     ['meta', { name: 'keywords', content: '建国鯖,建国サーバー,建国サーバー 統合版,マイクラ 建国鯖' }],
 
-    // 🔥 【改善】SNSでシェアされた時も検索キーワードが引っかかりやすいように統一
-    ['meta', { property: 'og:title', content: '【マイクラ】建国鯖 / 建国サーバー 公式ドキュメント' }],
-    ['meta', { property: 'og:description', content: 'Minecraft建国サーバー「建国鯖」の公式ガイドです。統合版・Java版対応！' }],
+    // 🔥 【修正】OGP（SNS用）も統合版専用に統一
+    ['meta', { property: 'og:title', content: '【マイクラ統合版】建国鯖 / 建国サーバー 公式ドキュメント' }],
+    ['meta', { property: 'og:description', content: 'マインクラフト統合版専用の建国サーバー「建国鯖」公式ガイドです。Switchやスマホから今すぐ参加！' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:image', content: 'https://www.gozakura.org/yuku5_icon.jpg' }]
   ],
 
   themeConfig: {
+    // ...（以降の設定は変更なし）
     logo: '/yuku5_icon.jpg',
     nav: [
       { text: 'ホーム', link: '/' },

@@ -3,7 +3,10 @@ layout: home
 
 hero:
   name: "建国鯖"
-  tagline: 統合版マインクラフト専用・24時間稼働の建国戦争サーバー<br>運営：ゆっくり伍桜(YouTube)
+  tagline: 統合版マインクラフト専用<br>24時間稼働の建国戦争サーバー<br>運営：ゆっくり伍桜(YouTube)
+  image:
+    src: /yuku5_icon.jpg
+    alt: 建国鯖ロゴ
   actions:
     - theme: brand
       text: サーバーに参加する
@@ -17,7 +20,7 @@ hero:
 
 features:
   - title: 🚩 本格的な建国システム
-    details: CountryWarsアドオンにより、領土の保護や国民管理が可能です。
+    details: CountryWarsアドオンにより、領土の保護や国民管理が可能です。 
   - title: ⚔️ 戦略的な戦争
     details: 宣戦布告、同盟、そして略奪。外交が勝利の鍵を握ります。
   - title: 📈 24時間安定稼働
@@ -30,6 +33,13 @@ import ServerStatus from './components/ServerStatus.vue'
 import NewsList from './components/NewsList.vue'
 import EventBanner from './components/EventBanner.vue'
 </script>
+
+<div style="max-width: 868px; margin: 40px auto; padding: 0 24px; text-align: center; line-height: 1.8;">
+  <p>
+    当サイトは、<strong>マインクラフト統合版（Bedrock Edition）専用</strong>のマルチサーバー<strong>「建国鯖（建国サーバー）」</strong>の公式ドキュメントサイトです。<br>
+    Nintendo Switch、スマートフォン、PlayStation、Xbox、PC（統合版）など、あらゆる統合版環境から24時間いつでも無料で参加可能です。
+  </p>
+</div>
 
 <ServerStatus />
 
