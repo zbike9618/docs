@@ -34,17 +34,14 @@ import NewsList from './components/NewsList.vue'
 import EventBanner from './components/EventBanner.vue'
 </script>
 
-<div style="max-width: 868px; margin: 40px auto; padding: 0 24px; text-align: center; line-height: 1.8;">
-  <p>
-    当サイトは、<strong>マインクラフト統合版（Bedrock Edition）専用</strong>のマルチサーバー<strong>「建国鯖（建国サーバー）」</strong>の公式ドキュメントサイトです。<br>
-    Nintendo Switch、スマートフォン、PlayStation、Xbox、PC（統合版）など、あらゆる統合版環境から24時間いつでも無料で参加可能です。
-  </p>
-</div>
+
 
 <ServerStatus />
 
 <EventBanner />
 
+当サイトは、**マインクラフト統合版（Bedrock Edition）専用**のマルチサーバー**「建国鯖（建国サーバー）」**の公式ドキュメントサイトです。  
+Nintendo Switch、スマートフォン、PlayStation、Xbox、PC（統合版）など、あらゆる統合版環境から24時間いつでも無料で参加可能です。
 ## 📢 最新のお知らせ
 
 <NewsList :limit="3" />
