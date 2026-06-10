@@ -9,10 +9,10 @@ export default defineConfig({
   base: basePathes,
   
   // 🔥 【修正】統合版であることを強調しつつ、狙いたいワードを網羅
-  title: "【マイクラ統合版】建国鯖 / 建国サーバー 公式サイト",
+  title: "【マイクラ統合版】建国鯖 - 戦争・国家・経済システム搭載サーバー",
   
   // 🔥 【修正】「統合版 建国サーバー」として認識されやすい文章に調整
-  description: "マインクラフト統合版（Switch/スマホ/PS/Xbox等）専用の建国サーバー「建国鯖」公式ドキュメントサイトです。ルールや参加方法、遊び方をまとめています。",
+  description: "マインクラフト統合版の本格的な建国・戦争・経済システムを備えたマルチサーバー『建国鯖』公式サイト。国家戦争、外交交渉、領土管理、経済システムで遊ぶ24時間安定稼働サーバーです。",
 
   srcDir: '.',
 
@@ -31,11 +31,11 @@ export default defineConfig({
     ['meta', { name: 'robots', content: 'index, follow' }],
     
     // 🔥 【修正】キーワードタグも統合版メインに絞り込み
-    ['meta', { name: 'keywords', content: '建国鯖,建国サーバー,建国サーバー 統合版,マイクラ 建国鯖' }],
+    ['meta', { name: 'keywords', content: '建国鯖,建国サーバー,マインクラフト統合版,マイクラ戦争,国家システム,経済システム,CountryWars,マイクラ建国,マイクラ外交' }],
 
     // 🔥 【修正】OGP（SNS用）も統合版専用に統一
-    ['meta', { property: 'og:title', content: '【マイクラ統合版】建国鯖 / 建国サーバー 公式ドキュメント' }],
-    ['meta', { property: 'og:description', content: 'マインクラフト統合版専用の建国サーバー「建国鯖」公式ガイドです。Switchやスマホから今すぐ参加！' }],
+    ['meta', { property: 'og:title', content: '【マイクラ統合版】建国鯖 - 戦争・国家・経済システム搭載' }],
+    ['meta', { property: 'og:description', content: '本格的な戦争システムと国家経済を備えたマイクラ統合版サーバー「建国鯖」。外交交渉で勝つ、領土を守る、経済を発展させる。Switchやスマホから参加可能！' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:image', content: 'https://www.gozakura.org/yuku5_icon.jpg' }]
   ],
