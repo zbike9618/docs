@@ -1,16 +1,35 @@
 <script setup>
-import { ref, computed } from 'vue'
-import bugData from '../.vitepress/bugs.json'
+import { ref, computed, onMounted } from 'vue'
 
 // すべてのバグを表示するかどうかを管理する変数（初期値はfalse）
 const showAll = ref(false)
+const bugData = ref([])
+const loading = ref(true)
+const error = ref(false)
+
+onMounted(async () => {
+  try {
+    const apiBase = import.meta.env.VITE_API_URL || 'https://api.gozakura.org'
+    const res = await fetch(`${apiBase}/api/bugs`)
+    if (res.ok) {
+      bugData.value = await res.json()
+    } else {
+      error.value = true
+    }
+  } catch (e) {
+    console.error('Failed to fetch bugs:', e)
+    error.value = true
+  } finally {
+    loading.value = false
+  }
+})
 
 const displayBugs = computed(() => {
   const activeBugs = []
   const fixedBugs = []
   
   // 修正済みとそれ以外を分類
-  for (const bug of bugData) {
+  for (const bug of bugData.value) {
     if (bug.status.includes('修正済み') || bug.status.includes('仕様')) {
       fixedBugs.push(bug)
     } else {
@@ -37,7 +56,13 @@ const toggleShowAll = () => {
 </script>
 
 <template>
-  <div class="bug-table-container">
+  <div v-if="loading" class="status-message loading">
+    ⏳ 不具合情報を読み込んでいます...
+  </div>
+  <div v-else-if="error" class="status-message error">
+    ⚠️ 不具合情報の取得に失敗しました。時間をおいて再読み込みしてください。
+  </div>
+  <div v-else class="bug-table-container">
     <table>
       <thead>
         <tr>
@@ -68,6 +93,29 @@ const toggleShowAll = () => {
 </template>
 
 <style scoped>
+.status-message {
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+}
+.loading {
+  background-color: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  animation: pulse 1.5s infinite;
+}
+.error {
+  background-color: var(--vp-custom-block-danger-bg, rgba(255, 84, 84, 0.1));
+  color: var(--vp-c-danger-1, #ff5454);
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
 .bug-table-container {
   overflow-x: auto;
 }
