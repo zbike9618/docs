@@ -2,7 +2,9 @@ name: Deploy VitePress site to Pages & Local LXC
 
 on:
   push:
-    branches: [main]
+    branches: 
+      - main
+      - pages
 
 permissions:
   contents: read
@@ -31,29 +33,34 @@ jobs:
       # 1. ローカルLXC用のビルドとデプロイ (base: '/')
       # --------------------------------------------------
       - name: Build with VitePress for LXC
+        if: github.ref == 'refs/heads/main'
         run: npm run docs:build
         env:
           LXC_DEPLOY: true
 
       # ビルドされたファイルを退避
       - name: Copy LXC dist to separate folder
+        if: github.ref == 'refs/heads/main'
         run: cp -r docs/.vitepress/dist ./dist-lxc
 
       - name: Tailscale
+        if: github.ref == 'refs/heads/main'
         uses: tailscale/github-action@v2
         with:
           authkey: ${{ secrets.TS_OAUTH_SECRET }}
           args: --accept-routes
 
       - name: Setup SSH
+        if: github.ref == 'refs/heads/main'
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.LXC_SSH_KEY }}" > ~/.ssh/id_rsa
+          printf "%s\n" "${{ secrets.LXC_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           echo "StrictHostKeyChecking no" >> ~/.ssh/config
 
       # 退避させたフォルダからLXCへ転送
       - name: Deploy to LXC via rsync
+        if: github.ref == 'refs/heads/main'
         run: rsync -avz --delete dist-lxc/ ${{ secrets.LXC_USER }}@192.168.11.120:/var/www/html/
 
       # --------------------------------------------------
@@ -61,16 +68,20 @@ jobs:
       # --------------------------------------------------
       # キャッシュと前回のビルド成果物を完全に削除して、確実に再ビルドさせる
       - name: Clean VitePress cache and dist
+        if: github.ref == 'refs/heads/pages'
         run: rm -rf docs/.vitepress/dist docs/.vitepress/.vitepress-cache
 
       - name: Build with VitePress for GitHub Pages
+        if: github.ref == 'refs/heads/pages'
         run: npm run docs:build
 
       # 念のため Pages 用にビルドされた中身があるかログで確認
       - name: Check dist directory
+        if: github.ref == 'refs/heads/pages'
         run: ls -la docs/.vitepress/dist
 
       - name: Upload artifact for GitHub Pages
+        if: github.ref == 'refs/heads/pages'
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/.vitepress/dist
@@ -78,10 +89,10 @@ jobs:
   deploy-pages:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     needs: build-and-deploy-lxc
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/pages'
         id: deployment
         uses: actions/deploy-pages@v4
