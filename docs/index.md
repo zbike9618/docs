@@ -34,14 +34,19 @@ import NewsList from './components/NewsList.vue'
 import EventBanner from './components/EventBanner.vue'
 </script>
 
-
+::: warning サイト移行のお知らせ
+このサイトは移行されました。
+最新のサイトはこちら(https://www.gozakura.org)
+:::
 
 <ServerStatus />
 
 <EventBanner />
 
+::: info 🎮 このサーバーについて
 当サイトは、**マインクラフト統合版（Bedrock Edition）専用**のマルチサーバー**「建国鯖（建国サーバー）」**の公式ドキュメントサイトです。  
 Nintendo Switch、スマートフォン、PlayStation、Xbox、PC（統合版）など、あらゆる統合版環境から24時間いつでも無料で参加可能です。
+:::
 ## 📢 最新のお知らせ
 
 <NewsList :limit="3" />
