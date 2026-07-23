@@ -46,6 +46,7 @@ export default defineConfig({
     nav: [
       { text: 'ホーム', link: '/' },
       { text: 'お知らせ', link: '/news' },
+      { text: 'アップデート', link: '/update' },
       {
         text: 'ガイド',
         items: [
