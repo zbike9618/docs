@@ -305,3 +305,78 @@ html { scroll-behavior: smooth; }
   .VPDoc .vp-doc h2 { margin-top: 44px; font-size: 23px; }
   .VPDoc .vp-doc table { display: block; }
 }
+
+/* --------------------------------------------------------------------------
+   Explicit light / dark color modes
+   -------------------------------------------------------------------------- */
+
+/* Light mode: navigation and documentation chrome stay light. */
+html:not(.dark) .VPNavBar {
+  border-bottom-color: #dedad2 !important;
+  background: rgba(250,248,244,.94) !important;
+}
+html:not(.dark) .VPNavBarTitle .title { color: #172033 !important; }
+html:not(.dark) .VPNavBarMenuLink,
+html:not(.dark) .VPNavBarMenuGroup .text,
+html:not(.dark) .VPNavBarSocialLinks .VPSocialLink { color: #505a69 !important; }
+html:not(.dark) .VPNavBarMenuLink:hover,
+html:not(.dark) .VPNavBarMenuLink.active,
+html:not(.dark) .VPNavBarMenuGroup:hover .text { color: #c93d62 !important; }
+html:not(.dark) .VPNavBarAppearance .VPSwitchAppearance { border-color: #d6d1c9; background: #eeebe5; }
+html:not(.dark) .VPNavBarHamburger .container span { background-color: #172033 !important; }
+html:not(.dark) .VPSidebar { border-right-color: #dedad2; background: #f8f6f2 !important; }
+html:not(.dark) .VPSidebar .group { border-top-color: #dedad2 !important; }
+html:not(.dark) .VPSidebarItem .text { color: #606977 !important; }
+html:not(.dark) .VPSidebarItem.level-0 > .item > .text { color: #172033 !important; }
+html:not(.dark) .VPSidebarItem.is-active > .item .link > .text { color: #c93d62 !important; }
+
+/* Dark mode: every reading surface and component receives a dark counterpart. */
+.dark .VPDoc {
+  background-color: #07111d;
+  background-image: linear-gradient(rgba(191,205,225,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(191,205,225,.035) 1px, transparent 1px);
+}
+.dark .VPDoc .content-container { border-color: #253347; background: rgba(13,25,41,.97); box-shadow: 0 22px 60px rgba(0,0,0,.22); }
+.dark .VPDocAsideOutline .outline-title { color: #e8edf5; }
+.dark .VPDocAsideOutline .outline-link { color: #8794a8; }
+.dark .VPDocAsideOutline .outline-link:hover,
+.dark .VPDocAsideOutline .outline-link.active { color: #f07596; }
+.dark .VPDoc .vp-doc h1 { border-bottom-color: #2b394d; color: #f2f5f9; }
+.dark .VPDoc .vp-doc h2 { border-bottom-color: #2b394d; color: #e7ecf4; }
+.dark .VPDoc .vp-doc h3 { color: #dce4ef; }
+.dark .VPDoc .vp-doc p,
+.dark .VPDoc .vp-doc li { color: #adb8c8; }
+.dark .VPDoc .vp-doc strong { color: #eef2f8; }
+.dark .VPDoc .vp-doc a { color: #f07596; text-decoration-color: rgba(240,117,150,.45); }
+.dark .VPDoc .vp-doc a:hover { color: #ff9bb6; }
+.dark .VPDoc .vp-doc code:not(pre code) { border-color: #334156; color: #ff91ae; background: #172438; }
+.dark .VPDoc .vp-code-group,
+.dark .VPDoc div[class*="language-"] { box-shadow: 0 14px 30px rgba(0,0,0,.25); }
+.dark .VPDoc .vp-doc th { border-color: #3b495e; color: #f3f6fa; background: #192a41; }
+.dark .VPDoc .vp-doc td { border-color: #344156; color: #b8c3d2; background: #101d2d; }
+.dark .VPDoc .vp-doc tr:nth-child(even) td { background: #142235; }
+.dark .VPDoc .custom-block { color: #bdc6d4; }
+.dark .VPDoc .custom-block.info { border-color: #5c8db2; background: #132b3d; }
+.dark .VPDoc .custom-block.tip { border-color: #55a681; background: #112d27; }
+.dark .VPDoc .custom-block.warning { border-color: #d5aa5c; background: #332b18; }
+.dark .VPDoc .custom-block.danger { border-color: #d75b6c; background: #351a23; }
+.dark .VPDoc .custom-block-title { color: #eef2f7; }
+.dark .VPDocFooter,
+.dark .VPDocFooter .prev-next { border-top-color: #2b394d !important; }
+.dark .VPDocFooter .pager-link { border-color: #304057; background: #101e30; }
+.dark .VPDocFooter .pager-link:hover { border-color: #e6567c; }
+.dark .VPDocFooter .title { color: #dce4ef; }
+.dark .VPDocFooter .desc { color: #f07596; }
+
+/* Home sections that are intentionally light also adapt in dark mode. */
+.dark .k-world { background: #0a1523; }
+.dark .k-updates { background: #07111d; }
+.dark .k-world .k-section-heading h2,
+.dark .k-updates .k-section-heading h2 { color: #eef2f7; }
+.dark .k-world .k-section-heading > p:last-child,
+.dark .k-updates .k-section-heading > p:last-child { color: #9eabba; }
+.dark .k-news-card { border-color: #2c3a4e; background: #0e1c2d; }
+.dark .k-news-card .news-list li { border-bottom-color: #2b394c; color: #aeb9c8; }
+.dark .k-news-card .news-list strong { color: #d5aa5c; }
+.dark .k-news-card .news-list a { color: #f07596; }
+.dark .k-updates .status-message.loading { color: #aeb9c8; background: #142236; }
+.dark .k-updates .status-message.error { color: #ff91ae; background: #351a23; }
