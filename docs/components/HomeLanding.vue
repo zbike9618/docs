@@ -21,7 +21,7 @@ const copyAddress = async () => {
 
 <template>
   <main class="k-home">
-    <section class="k-hero">
+    <section class="k-hero" :style="{ '--k-hero-image': `url(${withBase('/hero-castle-v1.png')})` }">
       <div class="k-hero-grid" aria-hidden="true"></div>
       <div class="k-orb k-orb-one" aria-hidden="true"></div>
       <div class="k-orb k-orb-two" aria-hidden="true"></div>
@@ -45,11 +45,6 @@ const copyAddress = async () => {
         </div>
 
         <div class="k-emblem-wrap">
-          <div class="k-emblem-ring k-ring-one"></div>
-          <div class="k-emblem-ring k-ring-two"></div>
-          <div class="k-emblem">
-            <img :src="withBase('/yuku5_icon.jpg')" alt="建国鯖ロゴ">
-          </div>
           <div class="k-floating-card k-card-top">
             <span class="k-card-icon">⚔</span>
             <div><small>THE WORLD AWAITS</small><strong>戦略的な国家戦争</strong></div>

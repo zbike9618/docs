@@ -32,10 +32,12 @@ html { scroll-behavior: smooth; }
   display: flex;
   align-items: center;
   color: white;
-  background: radial-gradient(circle at 72% 45%, rgba(219,77,114,.16), transparent 30%), linear-gradient(120deg, #07101d 0%, #0d1a2b 55%, #101827 100%);
+  background-image: linear-gradient(90deg, rgba(4,11,22,.28) 0%, rgba(4,11,22,.05) 48%, rgba(4,11,22,.04) 100%), var(--k-hero-image);
+  background-size: cover;
+  background-position: center;
 }
 .k-hero::after { content: ""; position: absolute; inset: auto 0 0; height: 120px; background: linear-gradient(transparent, rgba(5,11,20,.75)); }
-.k-hero-grid { position: absolute; inset: 0; opacity: .055; background-image: linear-gradient(rgba(255,255,255,.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.8) 1px, transparent 1px); background-size: 54px 54px; transform: perspective(600px) rotateX(55deg) scale(1.7); transform-origin: center bottom; }
+.k-hero-grid { position: absolute; inset: 0; opacity: .035; background-image: linear-gradient(rgba(255,255,255,.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.8) 1px, transparent 1px); background-size: 54px 54px; transform: perspective(600px) rotateX(55deg) scale(1.7); transform-origin: center bottom; }
 .k-orb { position: absolute; border-radius: 50%; }
 .k-orb-one { width: 520px; height: 520px; right: -240px; top: -240px; border: 1px solid rgba(213,170,92,.12); }
 .k-orb-two { width: 360px; height: 360px; left: -180px; bottom: -180px; background: rgba(230,86,124,.06); }
@@ -56,12 +58,6 @@ html { scroll-behavior: smooth; }
 .k-platforms span { margin-right: 6px; color: #96a1b2; }
 .k-platforms b { border-left: 1px solid #344055; padding-left: 12px; font-size: 9px; }
 .k-emblem-wrap { min-height: 480px; position: relative; display: grid; place-items: center; }
-.k-emblem { width: 310px; height: 310px; position: relative; z-index: 2; padding: 13px; background: linear-gradient(145deg, #e7ca86, #6e5127); clip-path: polygon(50% 0, 91% 14%, 100% 58%, 76% 92%, 25% 92%, 0 58%, 9% 14%); filter: drop-shadow(0 30px 35px rgba(0,0,0,.42)); }
-.k-emblem img { width: 100%; height: 100%; object-fit: cover; clip-path: inherit; filter: saturate(.8) contrast(1.08); }
-.k-emblem-ring { position: absolute; border: 1px solid rgba(213,170,92,.25); border-radius: 50%; }
-.k-ring-one { width: 390px; height: 390px; }
-.k-ring-two { width: 455px; height: 455px; border-style: dashed; opacity: .45; animation: k-spin 45s linear infinite; }
-@keyframes k-spin { to { transform: rotate(360deg); } }
 .k-floating-card { position: absolute; z-index: 3; display: flex; align-items: center; gap: 13px; min-width: 205px; padding: 14px 18px; color: white; border: 1px solid rgba(255,255,255,.12); background: rgba(10,22,37,.86); box-shadow: 0 16px 38px rgba(0,0,0,.3); backdrop-filter: blur(10px); }
 .k-floating-card small, .k-floating-card strong { display: block; }
 .k-floating-card small { color: #7f8da3; font-size: 8px; letter-spacing: .15em; }
@@ -126,9 +122,6 @@ html { scroll-behavior: smooth; }
   .k-hero { min-height: auto; }
   .k-hero-inner { grid-template-columns: 1fr; padding-top: 96px; }
   .k-emblem-wrap { min-height: 390px; }
-  .k-emblem { width: 250px; height: 250px; }
-  .k-ring-one { width: 310px; height: 310px; }
-  .k-ring-two { width: 360px; height: 360px; }
   .k-card-top { right: 3%; top: 45px; }
   .k-card-bottom { left: 3%; bottom: 35px; }
   .k-join-layout { grid-template-columns: 1fr; gap: 25px; }
@@ -160,6 +153,155 @@ html { scroll-behavior: smooth; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .k-ring-two { animation: none; }
   .k-button, .k-feature { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Shared documentation theme
+   -------------------------------------------------------------------------- */
+
+.VPNavBar {
+  border-bottom: 1px solid rgba(255,255,255,.09) !important;
+  background: rgba(7,16,29,.94) !important;
+  backdrop-filter: blur(16px);
+}
+.VPNavBar.has-sidebar .content-body,
+.VPNavBar:not(.home) .content-body { background: transparent !important; }
+.VPNavBarTitle .title { color: #fff !important; font-weight: 900; letter-spacing: .02em; }
+.VPNavBarTitle .logo { border-radius: 3px; box-shadow: 0 0 0 1px rgba(213,170,92,.45); }
+.VPNavBarMenuLink,
+.VPNavBarMenuGroup .text,
+.VPNavBarSocialLinks .VPSocialLink { color: #c8d0dc !important; }
+.VPNavBarMenuLink:hover,
+.VPNavBarMenuLink.active,
+.VPNavBarMenuGroup:hover .text { color: #f07596 !important; }
+.VPNavBarMenuLink.active { position: relative; }
+.VPNavBarMenuLink.active::after { content: ""; position: absolute; right: 0; bottom: 9px; left: 0; height: 1px; background: #e6567c; }
+.VPNavBarAppearance .VPSwitchAppearance { border-color: #364257; background: #111d2e; }
+.VPNavBarHamburger .container span { background-color: #fff !important; }
+
+.VPSidebar {
+  border-right: 1px solid #263346;
+  background: #0b1625 !important;
+}
+.VPSidebar .group { border-top-color: #263346 !important; }
+.VPSidebarItem .text { color: #aeb9c9 !important; font-size: 13px; }
+.VPSidebarItem.level-0 > .item > .text { color: #fff !important; font-weight: 800; letter-spacing: .04em; }
+.VPSidebarItem.is-active > .item .link > .text { color: #f07596 !important; }
+.VPSidebarItem.is-active > .item .indicator { background: #e6567c !important; }
+.VPSidebarItem .caret { color: #7d899a; }
+
+.VPDoc {
+  min-height: calc(100vh - var(--vp-nav-height));
+  background:
+    linear-gradient(rgba(23,32,51,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23,32,51,.035) 1px, transparent 1px),
+    #f3f0e9;
+  background-size: 42px 42px;
+}
+.VPDoc .container { max-width: 1180px !important; }
+.VPDoc .content { padding-bottom: 80px; }
+.VPDoc .content-container {
+  max-width: 850px !important;
+  padding: 0 48px 52px;
+  border: 1px solid #e1ddd5;
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 20px 55px rgba(16,28,45,.07);
+}
+.VPDoc .aside { padding-left: 28px; }
+.VPDocAsideOutline .outline-title { color: #172033; font-size: 11px; font-weight: 900; letter-spacing: .15em; }
+.VPDocAsideOutline .outline-link { color: #7b8290; }
+.VPDocAsideOutline .outline-link:hover,
+.VPDocAsideOutline .outline-link.active { color: #db4d72; }
+.VPDocAsideOutline .outline-marker { background-color: #db4d72; }
+
+.k-doc-banner {
+  position: relative;
+  margin: 0 -48px 42px;
+  padding: 38px 48px 34px;
+  overflow: hidden;
+  color: #fff;
+  background: linear-gradient(115deg, #0a1728, #162b3e 68%, #472031);
+}
+.k-doc-banner::before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  right: -34px;
+  top: -88px;
+  border: 1px solid rgba(213,170,92,.2);
+  transform: rotate(32deg);
+}
+.k-doc-banner::after {
+  content: "";
+  position: absolute;
+  left: 48px;
+  bottom: 0;
+  width: 56px;
+  height: 3px;
+  background: #e6567c;
+}
+.k-doc-banner span { color: #e2bf76; font-size: 10px; font-weight: 900; letter-spacing: .24em; }
+.k-doc-banner p { margin: 8px 0 0; color: #b5c0cf; font-size: 13px; }
+
+.VPDoc .vp-doc h1 {
+  position: relative;
+  margin: 0 0 34px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #dedad2;
+  color: #111d2e;
+  font-size: clamp(34px, 5vw, 48px);
+  line-height: 1.3;
+  letter-spacing: -.04em;
+}
+.VPDoc .vp-doc h1::after { content: ""; position: absolute; left: 0; bottom: -1px; width: 90px; height: 3px; background: linear-gradient(90deg, #e6567c, #d5aa5c); }
+.VPDoc .vp-doc h2 { margin-top: 56px; padding: 0 0 14px 18px; border-top: 0; border-bottom: 1px solid #e1ddd5; color: #152235; font-size: 26px; }
+.VPDoc .vp-doc h2::before { content: ""; position: absolute; left: 0; top: 5px; bottom: 18px; width: 4px; background: #e6567c; }
+.VPDoc .vp-doc h3 { margin-top: 36px; color: #213047; font-size: 20px; }
+.VPDoc .vp-doc p,
+.VPDoc .vp-doc li { color: #4d5665; line-height: 2; }
+.VPDoc .vp-doc strong { color: #1c2a3d; }
+.VPDoc .vp-doc a { color: #c93d62; text-decoration-color: rgba(201,61,98,.35); text-underline-offset: 3px; }
+.VPDoc .vp-doc a:hover { color: #ea5f84; }
+.VPDoc .vp-doc ul:not(.news-list) > li::marker { color: #d5aa5c; }
+.VPDoc .vp-doc ol > li::marker { color: #c93d62; font-weight: 900; }
+.VPDoc .vp-doc code:not(pre code) { border: 1px solid #d9d5ce; border-radius: 3px; color: #bd355a; background: #f3f0eb; }
+.VPDoc .vp-code-group,
+.VPDoc div[class*="language-"] { border-radius: 3px; box-shadow: 0 14px 30px rgba(14,25,39,.12); }
+
+.VPDoc .vp-doc table { display: table; width: 100%; border-collapse: collapse; }
+.VPDoc .vp-doc th { border-color: #26364b; color: #fff; background: #122238; }
+.VPDoc .vp-doc td { border-color: #ddd8cf; color: #4b5564; background: #fff; }
+.VPDoc .vp-doc tr:nth-child(even) td { background: #f8f6f2; }
+
+.VPDoc .custom-block { border-width: 0 0 0 4px; border-radius: 2px; padding: 20px 22px; }
+.VPDoc .custom-block.info { border-color: #4b789b; background: #edf4f8; }
+.VPDoc .custom-block.tip { border-color: #4b9b78; background: #edf8f3; }
+.VPDoc .custom-block.warning { border-color: #d5aa5c; background: #faf5e8; }
+.VPDoc .custom-block.danger { border-color: #d24d5f; background: #fbedef; }
+.VPDoc .custom-block-title { color: #172033; font-size: 12px; letter-spacing: .08em; }
+
+.VPDocFooter { border-top-color: #dfdbd3 !important; }
+.VPDocFooter .prev-next { border-top-color: #dfdbd3 !important; }
+.VPDocFooter .pager-link { border-color: #ddd8cf; border-radius: 2px; background: #faf8f4; }
+.VPDocFooter .pager-link:hover { border-color: #e6567c; }
+.VPDocFooter .title { color: #172033; }
+.VPDocFooter .desc { color: #c93d62; }
+
+@media (max-width: 959px) {
+  .VPSidebar { border-right: 0; }
+  .VPDoc .content-container { padding-right: 32px; padding-left: 32px; }
+  .k-doc-banner { margin-right: -32px; margin-left: -32px; padding-right: 32px; padding-left: 32px; }
+  .k-doc-banner::after { left: 32px; }
+}
+
+@media (max-width: 640px) {
+  .VPDoc { padding-top: 22px !important; }
+  .VPDoc .content-container { padding-right: 20px; padding-left: 20px; }
+  .k-doc-banner { margin: 0 -20px 32px; padding: 30px 20px 27px; }
+  .k-doc-banner::after { left: 20px; }
+  .VPDoc .vp-doc h1 { font-size: 34px; }
+  .VPDoc .vp-doc h2 { margin-top: 44px; font-size: 23px; }
+  .VPDoc .vp-doc table { display: block; }
 }
