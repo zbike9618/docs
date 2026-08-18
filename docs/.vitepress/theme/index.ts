@@ -1,6 +1,7 @@
 import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import BugBadge from './BugBadge.vue'
+import './custom.css'
 
 export default {
   extends: DefaultTheme,

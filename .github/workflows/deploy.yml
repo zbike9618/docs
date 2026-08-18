@@ -2,9 +2,10 @@ name: Deploy VitePress site to Pages & Local LXC
 
 on:
   push:
-    branches: 
+    branches:
       - main
       - pages
+      - redesign-preview
 
 permissions:
   contents: read
@@ -68,20 +69,20 @@ jobs:
       # --------------------------------------------------
       # キャッシュと前回のビルド成果物を完全に削除して、確実に再ビルドさせる
       - name: Clean VitePress cache and dist
-        if: github.ref == 'refs/heads/pages'
+        if: github.ref == 'refs/heads/pages' || github.ref == 'refs/heads/redesign-preview'
         run: rm -rf docs/.vitepress/dist docs/.vitepress/.vitepress-cache
 
       - name: Build with VitePress for GitHub Pages
-        if: github.ref == 'refs/heads/pages'
+        if: github.ref == 'refs/heads/pages' || github.ref == 'refs/heads/redesign-preview'
         run: npm run docs:build
 
       # 念のため Pages 用にビルドされた中身があるかログで確認
       - name: Check dist directory
-        if: github.ref == 'refs/heads/pages'
+        if: github.ref == 'refs/heads/pages' || github.ref == 'refs/heads/redesign-preview'
         run: ls -la docs/.vitepress/dist
 
       - name: Upload artifact for GitHub Pages
-        if: github.ref == 'refs/heads/pages'
+        if: github.ref == 'refs/heads/pages' || github.ref == 'refs/heads/redesign-preview'
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/.vitepress/dist
@@ -93,6 +94,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/pages'
+        if: github.ref == 'refs/heads/pages' || github.ref == 'refs/heads/redesign-preview'
         id: deployment
         uses: actions/deploy-pages@v4

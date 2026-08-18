@@ -21,8 +21,8 @@ export default defineConfig({
   },
 
   head: [
-    ['link', { rel: 'icon', type: 'image/jpeg', href: '/yuku5_icon.jpg' }],
-    ['link', { rel: 'apple-touch-icon', href: '/yuku5_icon.jpg' }],
+    ['link', { rel: 'icon', type: 'image/jpeg', href: `${basePathes}yuku5_icon.jpg` }],
+    ['link', { rel: 'apple-touch-icon', href: `${basePathes}yuku5_icon.jpg` }],
     
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
