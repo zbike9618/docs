@@ -110,13 +110,10 @@ html { scroll-behavior: smooth; }
 .k-update-head { display: flex; justify-content: space-between; align-items: end; gap: 28px; }
 .k-update-head > a { color: var(--k-pink); font-size: 13px; font-weight: 800; }
 .k-news-card { margin-top: 40px; padding: 28px 32px; border: 1px solid #e4e1dc; background: #faf9f7; }
-.k-news-card .news-list li { padding: 15px 0 15px 95px; margin: 0; border-bottom: 1px solid #e5e1db; }
-.k-news-card .news-list li:last-child { border-bottom: 0; }
-.k-news-card .news-list li::before { display: none; }
-.k-news-card .news-list strong { position: absolute; left: 0; color: #9b8060; font-size: 12px; }
 .k-final-cta { padding: 82px 0; color: white; background: linear-gradient(125deg, #101d2d, #381a29); }
 .k-final-inner { display: flex; align-items: center; justify-content: space-between; gap: 48px; }
 .k-final-cta h2 { margin-top: 12px; color: white; border: 0; font-size: clamp(30px, 4vw, 48px); line-height: 1.4; }
+.k-mobile-dock { display: none; }
 
 @media (max-width: 900px) {
   .k-hero { min-height: auto; }
@@ -128,27 +125,103 @@ html { scroll-behavior: smooth; }
 }
 
 @media (max-width: 640px) {
-  .k-home { margin-top: -20px; }
-  .k-shell { width: min(100% - 32px, 1160px); }
-  .k-hero-inner { padding: 86px 0 58px; gap: 20px; }
-  .k-hero h1 { font-size: 47px; }
+  html, body { overflow-x: clip; }
+  .k-home { margin-top: -20px; padding-bottom: 70px; }
+  .k-shell { width: min(100% - 40px, 1160px); }
+  .k-hero {
+    min-height: calc(100svh - var(--vp-nav-height));
+    align-items: flex-end;
+    background-image: linear-gradient(180deg, rgba(4,10,19,.12) 0%, rgba(4,10,19,.2) 32%, rgba(4,10,19,.88) 78%, #07101d 100%), var(--k-hero-image);
+    background-position: 66% center;
+  }
+  .k-hero::after { height: 50%; }
+  .k-hero-grid, .k-orb { display: none; }
+  .k-hero-inner { display: block; padding: 90px 0 42px; }
+  .k-hero-copy { max-width: 350px; }
+  .k-eyebrow { gap: 9px; font-size: 9px; letter-spacing: .18em; }
+  .k-eyebrow span { width: 22px; }
+  .k-hero h1 { margin-top: 15px; font-size: clamp(38px, 11vw, 46px); line-height: 1.12; }
+  .k-lead { margin-top: 19px !important; max-width: 330px; font-size: 14px; line-height: 1.75; }
   .k-lead br { display: none; }
-  .k-actions { flex-direction: column; }
-  .k-button { width: 100%; }
+  .k-actions { display: grid; grid-template-columns: 1.2fr .8fr; gap: 9px; margin-top: 26px; }
+  .k-button { width: 100%; min-height: 50px; gap: 12px; padding: 0 14px; font-size: 13px; }
   .k-platforms { display: none; }
-  .k-emblem-wrap { min-height: 340px; transform: scale(.88); }
-  .k-floating-card { min-width: 175px; }
-  .k-card-top { right: -7%; }
-  .k-card-bottom { left: -7%; }
-  .k-join, .k-world, .k-updates { padding: 76px 0; }
-  .k-address-row { grid-template-columns: 1fr; }
-  .k-address-row button { min-height: 48px; }
-  .k-feature-grid { grid-template-columns: 1fr; }
-  .k-feature { min-height: 245px; }
+  .k-emblem-wrap { display: none; }
+
+  .k-join, .k-world, .k-updates { padding: 62px 0; }
+  .k-kicker { font-size: 10px; letter-spacing: .18em; }
+  .k-section-heading h2 { margin-top: 10px; font-size: 30px; line-height: 1.4; }
+  .k-section-heading > p:last-child { margin-top: 10px; font-size: 13px; line-height: 1.75; }
+  .k-join-layout { gap: 18px; margin-top: 28px; }
+  .k-connect-card { padding: 20px; }
+  .k-connect-head { margin-bottom: 20px; font-size: 14px; }
+  .k-address-row { grid-template-columns: minmax(0, 1fr) 88px; gap: 7px; }
+  .k-address-row code { display: flex; align-items: center; padding: 13px 11px; font-size: 13px; text-overflow: ellipsis; }
+  .k-address-row button { min-height: 46px; padding: 0 8px; font-size: 12px; }
+  .k-connect-card > p { margin-top: 17px; line-height: 1.7; }
+  .k-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .k-steps li { display: block; min-height: 112px; padding: 15px 12px; border: 1px solid #263448; background: rgba(255,255,255,.025); }
+  .k-steps li > span { display: block; margin-bottom: 13px; }
+  .k-steps h3 { font-size: 13px; line-height: 1.5; }
+  .k-steps p { display: none; }
+  .k-join .server-status { margin-top: 24px; padding: 14px 12px; }
+  .k-join .server-status .status-cell { font-size: 14px; line-height: 1.55; }
+  .k-join .server-status .players { display: inline; margin-left: 3px; font-size: 12px; }
+  .k-join .server-status .last-update { flex-wrap: wrap; gap: 7px; font-size: 10px; }
+
+  .k-feature-grid {
+    width: calc(100vw - 20px);
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+    padding: 0 20px 16px 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .k-feature-grid::-webkit-scrollbar { display: none; }
+  .k-feature { flex: 0 0 min(82vw, 310px); min-height: 220px; padding: 24px; scroll-snap-align: start; }
+  .k-feature i { right: 18px; top: 18px; font-size: 52px; }
+  .k-feature h3 { font-size: 23px; }
+  .k-feature p { font-size: 13px; }
   .k-update-head, .k-final-inner { align-items: flex-start; flex-direction: column; }
-  .k-news-card { padding: 20px; }
-  .k-news-card .news-list li { padding-left: 0; padding-top: 40px; }
-  .k-news-card .news-list strong { top: 14px; }
+  .k-update-head { gap: 14px; }
+  .k-news-card { margin-top: 25px; padding: 16px; }
+  .k-updates .event-banner { margin-top: 14px; }
+  .k-updates .event-content { padding: 18px; }
+  .k-final-cta { padding: 62px 0; }
+  .k-final-inner { gap: 25px; }
+  .k-final-cta h2 { font-size: 29px; }
+
+  .k-mobile-dock {
+    position: fixed;
+    z-index: 60;
+    right: 10px;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 60px;
+    padding: 8px 8px 8px 16px;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 8px;
+    color: white;
+    background: rgba(8,17,31,.94);
+    box-shadow: 0 16px 40px rgba(0,0,0,.38);
+    backdrop-filter: blur(16px);
+    opacity: 0;
+    transform: translateY(calc(100% + 18px));
+    pointer-events: none;
+    transition: opacity .22s ease, transform .22s ease;
+  }
+  .k-mobile-dock.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .k-mobile-dock-status { display: flex; align-items: center; gap: 11px; }
+  .k-mobile-dock-status > span:last-child { display: flex; flex-direction: column; }
+  .k-mobile-dock-status small { color: #8491a4; font-size: 8px; letter-spacing: .12em; }
+  .k-mobile-dock-status strong { margin-top: 1px; font-size: 13px; }
+  .k-mobile-dock > a { display: flex; align-items: center; gap: 16px; min-height: 44px; padding: 0 18px; border-radius: 5px; color: white; background: var(--k-pink); font-size: 13px; font-weight: 900; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -375,8 +448,47 @@ html:not(.dark) .VPSidebarItem.is-active > .item .link > .text { color: #c93d62 
 .dark .k-world .k-section-heading > p:last-child,
 .dark .k-updates .k-section-heading > p:last-child { color: #9eabba; }
 .dark .k-news-card { border-color: #2c3a4e; background: #0e1c2d; }
-.dark .k-news-card .news-list li { border-bottom-color: #2b394c; color: #aeb9c8; }
-.dark .k-news-card .news-list strong { color: #d5aa5c; }
-.dark .k-news-card .news-list a { color: #f07596; }
 .dark .k-updates .status-message.loading { color: #aeb9c8; background: #142236; }
 .dark .k-updates .status-message.error { color: #ff91ae; background: #351a23; }
+
+@media (max-width: 640px) {
+  .VPNavBar .container { max-width: 100%; padding: 0 12px 0 16px; }
+  .VPNavBarTitle { min-width: 0; max-width: calc(100vw - 76px); }
+  .VPNavBarTitle .title { min-width: 0; max-width: 100%; }
+  .VPNavBarTitle .title span { min-width: 0; overflow: hidden; font-size: 0; white-space: nowrap; text-overflow: ellipsis; }
+  .VPNavBarTitle .title span::after { content: "建国鯖"; font-size: 14px; letter-spacing: .02em; }
+  .VPNavBar .content { flex: 0 0 auto; min-width: 48px; }
+  .VPNavBar .content-body { width: auto; }
+  .VPNavBar .bug-badge { display: none !important; }
+  .VPNavBarHamburger { margin-left: 0 !important; }
+  .VPLocalNav { min-height: 44px; border-bottom-color: var(--vp-c-divider); background: var(--vp-c-bg); }
+  .VPLocalNav .container { padding: 0 20px; }
+  .VPLocalNav .menu-text { font-size: 0; }
+  .VPLocalNav .menu-text::after { content: "このページの目次"; font-size: 11px; font-weight: 800; letter-spacing: .06em; }
+
+  .k-world .k-section-heading::after {
+    content: "横にスワイプして見る  →";
+    display: block;
+    margin-top: 16px;
+    color: var(--k-pink);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .08em;
+  }
+
+  .VPDoc { padding: 16px 0 76px !important; }
+  .VPDoc .container { width: 100%; margin: 0; }
+  .VPDoc .content { padding: 0; }
+  .VPDoc .content-container { padding: 0 20px 42px; border-right: 0; border-left: 0; box-shadow: none; }
+  .k-doc-banner { margin: 0 -20px 30px; padding: 27px 20px 24px; }
+  .k-doc-banner p { max-width: 280px; line-height: 1.65; }
+  .VPDoc .vp-doc h1 { margin-bottom: 28px; padding-bottom: 19px; font-size: 32px; line-height: 1.35; }
+  .VPDoc .vp-doc h2 { margin-top: 42px; padding-left: 14px; font-size: 22px; line-height: 1.5; }
+  .VPDoc .vp-doc h3 { margin-top: 31px; font-size: 18px; }
+  .VPDoc .vp-doc p,
+  .VPDoc .vp-doc li { font-size: 15px; line-height: 1.9; }
+  .VPDoc .custom-block { margin: 22px -4px; padding: 17px 18px; }
+  .VPDoc .vp-doc table { font-size: 13px; }
+  .VPDoc .vp-doc th,
+  .VPDoc .vp-doc td { min-width: 120px; padding: 10px 12px; }
+}

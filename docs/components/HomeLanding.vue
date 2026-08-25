@@ -1,12 +1,15 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { withBase } from 'vitepress'
 import ServerStatus from './ServerStatus.vue'
 import NewsList from './NewsList.vue'
 import EventBanner from './EventBanner.vue'
 
 const copied = ref(false)
+const heroSection = ref(null)
+const showMobileDock = ref(false)
 const serverAddress = 'play.gozakura.org'
+let heroObserver = null
 
 const copyAddress = async () => {
   try {
@@ -17,11 +20,22 @@ const copyAddress = async () => {
     copied.value = false
   }
 }
+
+onMounted(() => {
+  if (!window.matchMedia('(max-width: 640px)').matches || !heroSection.value) return
+
+  heroObserver = new IntersectionObserver(([entry]) => {
+    showMobileDock.value = !entry.isIntersecting
+  }, { threshold: 0.08 })
+  heroObserver.observe(heroSection.value)
+})
+
+onUnmounted(() => heroObserver?.disconnect())
 </script>
 
 <template>
   <main class="k-home">
-    <section class="k-hero" :style="{ '--k-hero-image': `url(${withBase('/hero-castle-v1.png')})` }">
+    <section ref="heroSection" class="k-hero" :style="{ '--k-hero-image': `url(${withBase('/hero-castle-v1.png')})` }">
       <div class="k-hero-grid" aria-hidden="true"></div>
       <div class="k-orb k-orb-one" aria-hidden="true"></div>
       <div class="k-orb k-orb-two" aria-hidden="true"></div>
@@ -156,5 +170,13 @@ const copyAddress = async () => {
         <a class="k-button k-button-primary" href="#join">建国鯖に参加する <span>→</span></a>
       </div>
     </section>
+
+    <div class="k-mobile-dock" :class="{ 'is-visible': showMobileDock }" aria-label="クイック参加">
+      <div class="k-mobile-dock-status">
+        <span class="k-live-dot"></span>
+        <span><small>24H ONLINE</small><strong>建国鯖</strong></span>
+      </div>
+      <a href="#join">参加する <span>→</span></a>
+    </div>
   </main>
 </template>
