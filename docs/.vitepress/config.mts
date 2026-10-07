@@ -47,6 +47,7 @@ export default defineConfig({
       { text: 'ホーム', link: '/' },
       { text: 'お知らせ', link: '/news' },
       { text: 'アップデート', link: '/update' },
+      { text: '投票', link: '/vote' },
       {
         text: 'ガイド',
         items: [
