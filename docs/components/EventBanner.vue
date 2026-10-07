@@ -1,14 +1,54 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+
+// バナーの中身は管理画面（/api/banners）で管理する。表示期間外・非表示・締め切られた投票のものはAPI側で除かれる
+const banners = ref([])
+
+onMounted(async () => {
+  try {
+    const apiBase = import.meta.env.VITE_API_URL || 'https://api.gozakura.org'
+    const res = await fetch(`${apiBase}/api/banners`)
+    if (res.ok) banners.value = await res.json()
+  } catch (e) {
+    // 取れないときはバナーを出さないだけ
+    console.error('Failed to fetch banners:', e)
+  }
+})
+
+const isExternal = (link) => /^https?:\/\//.test(link || '')
+
+const formatDate = (iso) =>
+  new Date(iso).toLocaleString('ja-JP', {
+    timeZone: 'Asia/Tokyo',
+    month: 'numeric',
+    day: 'numeric',
+    weekday: 'short',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+</script>
+
 <template>
-  <a href="/form" class="event-banner">
+  <component
+    :is="banner.link ? 'a' : 'div'"
+    v-for="banner in banners"
+    :key="banner.id"
+    :href="banner.link || undefined"
+    :target="isExternal(banner.link) ? '_blank' : undefined"
+    :rel="isExternal(banner.link) ? 'noopener' : undefined"
+    class="event-banner"
+    :class="{ 'is-poll': banner.kind === 'poll', 'is-static': !banner.link }"
+  >
     <div class="event-content">
-      <div class="badge">SPECIAL EVENT</div>
+      <div class="badge">{{ banner.badge }}</div>
       <div class="text-group">
-        <h3 class="title">✨ サーバー名募集中！</h3>
-        <p class="description">あなたの案が建国鯖の名前になるかも？案を募集中です！</p> 
+        <h3 class="title">{{ banner.title }}</h3>
+        <p v-if="banner.body" class="description">{{ banner.body }}</p>
+        <p v-if="banner.closesAt" class="deadline">締め切り：{{ formatDate(banner.closesAt) }}</p>
       </div>
-      <div class="arrow">➔</div>
+      <div v-if="banner.link" class="arrow">➔</div>
     </div>
-  </a>
+  </component>
 </template>
 
 <style scoped>
@@ -24,8 +64,11 @@
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
+.event-banner + .event-banner {
+  margin-top: -8px;
+}
 
-.event-banner:hover {
+.event-banner:hover:not(.is-static) {
   transform: translateY(-2px);
   border-color: rgba(111, 142, 247, 0.5);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(111, 142, 247, 0.15);
@@ -53,6 +96,17 @@
   animation: pulse 2s infinite;
 }
 
+/* 投票バナーはバッジを緑にして通常のイベントと見分ける */
+.is-poll .badge {
+  background: rgba(76, 195, 138, 0.12);
+  color: #6fe0a8;
+  border-color: rgba(76, 195, 138, 0.35);
+}
+.event-banner.is-poll:hover {
+  border-color: rgba(76, 195, 138, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(76, 195, 138, 0.15);
+}
+
 .text-group {
   flex-grow: 1;
 }
@@ -70,6 +124,13 @@
   font-size: 0.9rem;
   opacity: 0.9;
   color: white;
+  white-space: pre-line;
+}
+
+.deadline {
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  color: #a8b3c7;
 }
 
 .arrow {
