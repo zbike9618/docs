@@ -1,19 +1,27 @@
 <template>
-  <div class="server-status" :class="{ online: isOnline, offline: !isOnline && !loading }">
-    <div v-if="loading" class="status-cell">
+  <div class="server-status" :class="state">
+    <div v-if="state === 'loading'" class="status-cell">
       <span class="icon">🔄</span> 通信中...
     </div>
-    <div v-else-if="isOnline" class="status-cell">
+    <div v-else-if="state === 'online'" class="status-cell">
       <span class="icon">🟢</span> サーバーは現在オンラインです！
       <span class="players" v-if="players !== null">({{ players }} / {{ maxPlayers }} 人)</span>
     </div>
-    <div v-else class="status-cell">
+    <div v-else-if="state === 'unreachable'" class="status-cell">
+      <span class="icon">🟡</span> サーバーは起動していますが、外部から接続しにくい状態です。
+    </div>
+    <div v-else-if="state === 'offline'" class="status-cell">
       <span class="icon">🔴</span> サーバーは現在オフライン（ダウン）です。
     </div>
-    
-    <div class="last-update" v-if="!loading">
+    <div v-else class="status-cell">
+      <span class="icon">⚪</span> サーバー状態を取得できませんでした。
+    </div>
+
+    <div class="last-update" v-if="state !== 'loading'">
       最終更新: {{ lastUpdateTime }}
-      <button @click="fetchStatus" class="update-btn">手動更新</button>
+      <button @click="fetchStatus" class="update-btn" :disabled="refreshing">
+        {{ refreshing ? '更新中...' : '手動更新' }}
+      </button>
     </div>
   </div>
 </template>
@@ -21,47 +29,46 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
-// ▼▼▼ ここをご自身のサーバーのIPアドレス・ポート番号に変更してください ▼▼▼
-const SERVER_IP = 'play.gozakura.org' // 例: 192.168.0.102 等
-const SERVER_PORT = '19132'          // 統合版のデフォルトは 19132
-// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-
-const isOnline = ref(false)
+// loading → online / unreachable / offline / error
+const state = ref('loading')
+const refreshing = ref(false)
 const players = ref(null)
 const maxPlayers = ref(null)
-const loading = ref(true)
 const lastUpdateTime = ref('')
 
 let intervalId = null
 
 // サーバーのステータスを取得する関数
 const fetchStatus = async () => {
-  loading.value = true
+  refreshing.value = true
   try {
-    // mcsrvstat.us という無料のサーバー確認APIを使用します（統合版用）
-    const response = await fetch(`https://api.mcsrvstat.us/bedrock/3/${SERVER_IP}:${SERVER_PORT}`)
+    // 自前のAPIがサーバーへ直接 ping して確かめた結果を返す（外部のステータスAPIは使わない）
+    const apiBase = import.meta.env.VITE_API_URL || 'https://api.gozakura.org'
+    const response = await fetch(`${apiBase}/api/status`, { cache: 'no-store' })
+    if (!response.ok) throw new Error(`HTTP ${response.status}`)
     const data = await response.json()
-    
-    isOnline.value = data.online
-    if (data.online) {
-      players.value = data.players?.online ?? 0
-      maxPlayers.value = data.players?.max ?? '?'
-    }
+
+    if (!data.online) state.value = 'offline'
+    else if (!data.reachable) state.value = 'unreachable'
+    else state.value = 'online'
+    players.value = data.players
+    maxPlayers.value = data.maxPlayers
   } catch (error) {
+    // 取得に失敗しただけでサーバーが落ちているとは限らないので「オフライン」とは出さない
     console.error('サーバー状態の取得に失敗しました', error)
-    isOnline.value = false
+    state.value = 'error'
   } finally {
     const now = new Date()
     // 時間を hh:mm:ss 形式にして保存
     lastUpdateTime.value = `${now.getHours()}時${now.getMinutes().toString().padStart(2, '0')}分${now.getSeconds().toString().padStart(2, '0')}秒`
-    loading.value = false
+    refreshing.value = false
   }
 }
 
 // ページが開かれたときに実行される処理
 onMounted(() => {
   fetchStatus() // 最初の一回を取得
-  
+
   // 60秒（60000ミリ秒）ごとに自動更新するようセット
   intervalId = setInterval(fetchStatus, 60000)
 })
@@ -91,9 +98,18 @@ onUnmounted(() => {
   background-color: rgba(76, 175, 80, 0.1);
 }
 
+.server-status.unreachable {
+  border-color: #FFB300;
+  background-color: rgba(255, 179, 0, 0.1);
+}
+
 .server-status.offline {
   border-color: #F44336;
   background-color: rgba(244, 67, 54, 0.1);
+}
+
+.server-status.error {
+  border-color: var(--vp-c-divider);
 }
 
 .status-cell {
@@ -134,5 +150,10 @@ onUnmounted(() => {
 
 .update-btn:hover {
   background-color: var(--vp-c-brand-2);
+}
+
+.update-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
 </style>
