@@ -1,6 +1,7 @@
 {
   "type": "module",
   "devDependencies": {
+    "markdown-it": "^14.3.2",
     "vitepress": "^1.6.4"
   },
   "scripts": {

@@ -33,6 +33,9 @@ onMounted(async () => {
 const displayNews = computed(() => {
   return props.limit > 0 ? newsData.value.slice(0, props.limit) : newsData.value
 })
+
+// 本文があるお知らせは記事ページ（news/view.md）へ。無ければ管理画面で入れたリンク先へ
+const pageOf = (item) => (item.body ? `/news/view?id=${item.id}` : item.link)
 </script>
 
 <template>
@@ -45,7 +48,7 @@ const displayNews = computed(() => {
   <ul v-else class="news-list">
     <li v-for="(item, index) in displayNews" :key="index">
       <strong>{{ item.date }}:</strong>
-      <a v-if="item.link" :href="withBase(item.link)">{{ item.text }}</a>
+      <a v-if="pageOf(item)" :href="withBase(pageOf(item))">{{ item.text }}</a>
       <span v-else>{{ item.text }}</span>
     </li>
   </ul>

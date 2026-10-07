@@ -17,7 +17,9 @@ export default defineConfig({
   srcDir: '.',
 
   sitemap: {
-    hostname: 'https://www.gozakura.org'
+    hostname: 'https://www.gozakura.org',
+    // 記事ページの入れ物（中身は ?id= ごとに API から取る）なので、それ単体は載せない
+    transformItems: (items) => items.filter((item) => !/news\/view(\.html)?$/.test(item.url))
   },
 
   head: [
