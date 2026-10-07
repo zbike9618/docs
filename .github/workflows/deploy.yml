@@ -44,7 +44,7 @@ jobs:
         run: cp -r docs/.vitepress/dist ./dist-lxc
 
       # OAuth client（Auth Keys: Write, tag:ci）で毎回使い捨ての鍵を作る。auth key と違って期限切れにならない
-      # 192.168.11.0/24 へは CT107 nginxproxymanager の subnet router 経由で届く
+      # 192.168.11.0/24 へは CT107 nginxproxymanager の subnet router 経由で届く（v4 は --accept-routes を自分で付けるので args には書かない）
       - name: Tailscale
         if: github.ref == 'refs/heads/main'
         uses: tailscale/github-action@v4
@@ -52,7 +52,6 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
-          args: --accept-routes
 
       - name: Setup SSH
         if: github.ref == 'refs/heads/main'
