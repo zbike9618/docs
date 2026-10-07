@@ -21,7 +21,7 @@ onMounted(async () => {
     banHistory.value = (await res.json()).map((b, i) => ({
       id: `ban-${i}`,
       date: b.bannedAt ? formatDate(b.bannedAt) : '-',
-      sortKey: b.bannedAt ?? 0,
+      sortKey: b.bannedAt ?? b.seenAt ?? 0,
       player: b.name,
       reason: b.reason,
       type: 'BAN',
