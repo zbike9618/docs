@@ -4,6 +4,7 @@ import { withBase } from 'vitepress'
 import ServerStatus from './ServerStatus.vue'
 import NewsList from './NewsList.vue'
 import EventBanner from './EventBanner.vue'
+import BlogGallery from './BlogGallery.vue'
 
 const copied = ref(false)
 const heroSection = ref(null)
@@ -166,6 +167,9 @@ onUnmounted(() => heroObserver?.disconnect())
         </div>
       </div>
     </section>
+
+    <!-- ブログの最新記事（管理画面の「ブログ」で書く）。記事が無いあいだは出ない -->
+    <BlogGallery />
 
     <section class="k-final-cta">
       <div class="k-shell k-final-inner">
