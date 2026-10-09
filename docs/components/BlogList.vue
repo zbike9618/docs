@@ -36,7 +36,8 @@ const dateOf = (iso) => formatDateTime(iso).split(' ')[0]
     <a v-for="p in posts" :key="p.id" class="blog-card" :href="withBase(`/blog/view?id=${p.id}`)">
       <div class="blog-thumb">
         <img v-if="p.thumbnail" :src="imageUrl(p.thumbnail)" alt="" loading="lazy">
-        <span v-else class="blog-thumb-empty" aria-hidden="true">📝</span>
+        <!-- 画像が無い記事はトップの城の画像を暗くして代わりに使う -->
+        <img v-else class="blog-thumb-fallback" :src="withBase('/hero-castle-v1.webp')" alt="" loading="lazy">
       </div>
       <div class="blog-card-body">
         <h3 class="blog-title">{{ p.title }}</h3>
@@ -105,7 +106,7 @@ const dateOf = (iso) => formatDateTime(iso).split(' ')[0]
   height: 100%;
   object-fit: cover;
 }
-.blog-thumb-empty { font-size: 32px; opacity: .5; }
+.blog-thumb img.blog-thumb-fallback { filter: brightness(.45) saturate(.8); }
 .blog-card-body {
   display: flex;
   flex-direction: column;
