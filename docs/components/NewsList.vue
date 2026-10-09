@@ -57,7 +57,6 @@ const pageOf = (item) => (item.body ? `/news/view?id=${item.id}` : item.link)
       </a>
       <div v-else class="news-content news-content-static">
         <span class="news-text">{{ item.text }}</span>
-        <span class="news-state">本文のみ</span>
       </div>
     </li>
   </ul>
@@ -141,8 +140,7 @@ a.news-content:hover {
   color: var(--vp-c-text-1);
   line-height: 1.65;
 }
-.news-action,
-.news-state {
+.news-action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -159,11 +157,6 @@ a.news-content:hover {
 }
 .news-action i { margin-left: 6px; font-style: normal; transition: transform .2s ease; }
 a.news-content:hover .news-action i { transform: translateX(3px); }
-.news-state {
-  border: 1px solid var(--vp-c-divider);
-  color: var(--vp-c-text-3);
-  background: var(--vp-c-bg-soft);
-}
 
 @media (max-width: 640px) {
   .news-list li {
@@ -174,7 +167,6 @@ a.news-content:hover .news-action i { transform: translateX(3px); }
   .news-list time { padding-left: 2px; }
   .news-content { gap: 10px; padding: 10px 2px; }
   a.news-content:hover { transform: none; }
-  .news-action,
-  .news-state { min-width: auto; padding: 5px 8px; }
+  .news-action { min-width: auto; padding: 5px 8px; }
 }
 </style>
