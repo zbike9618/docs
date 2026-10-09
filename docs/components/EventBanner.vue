@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { withBase } from 'vitepress'
 
 // バナーの中身は管理画面（/api/banners）で管理する。表示期間外・非表示・締め切られた投票のものはAPI側で除かれる
 const banners = ref([])
@@ -16,6 +17,8 @@ onMounted(async () => {
 })
 
 const isExternal = (link) => /^https?:\/\//.test(link || '')
+// サイト内のリンクは base（GitHub Pages では /docs/）を付ける
+const hrefOf = (link) => (!link ? undefined : isExternal(link) ? link : withBase(link))
 
 const formatDate = (iso) =>
   new Date(iso).toLocaleString('ja-JP', {
@@ -33,7 +36,7 @@ const formatDate = (iso) =>
     :is="banner.link ? 'a' : 'div'"
     v-for="banner in banners"
     :key="banner.id"
-    :href="banner.link || undefined"
+    :href="hrefOf(banner.link)"
     :target="isExternal(banner.link) ? '_blank' : undefined"
     :rel="isExternal(banner.link) ? 'noopener' : undefined"
     class="event-banner"
