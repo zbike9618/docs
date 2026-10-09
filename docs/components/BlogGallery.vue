@@ -43,10 +43,11 @@ const dateOf = (iso) => formatDateTime(iso).split(' ')[0]
           :href="withBase(`/blog/view?id=${p.id}`)"
         >
           <img v-if="p.thumbnail" :src="imageUrl(p.thumbnail)" alt="" loading="lazy">
-          <span v-else class="k-tile-empty" aria-hidden="true">📝</span>
-          <div class="k-tile-caption">
+          <!-- 画像が無い記事は、トップの城の画像を暗くして敷き、本文の抜粋を見せる -->
+          <img v-else class="k-tile-fallback" :src="withBase('/hero-castle-v1.webp')" alt="" loading="lazy">
+          <div class="k-tile-caption" :class="{ 'k-tile-caption-text': !p.thumbnail }">
             <h3>{{ p.title }}</h3>
-            <p v-if="i === 0 && p.excerpt" class="k-tile-excerpt">{{ p.excerpt }}</p>
+            <p v-if="(i === 0 || !p.thumbnail) && p.excerpt" class="k-tile-excerpt">{{ p.excerpt }}</p>
             <p class="k-tile-meta">
               <b v-if="SOURCE_LABELS[p.source]">{{ SOURCE_LABELS[p.source] }}</b>
               <span>{{ p.authorName }}</span>
@@ -98,13 +99,30 @@ const dateOf = (iso) => formatDateTime(iso).split(' ')[0]
   transition: transform .5s ease;
 }
 .k-tile:hover img { transform: scale(1.04); }
-.k-tile-empty {
-  position: absolute;
+.k-tile img.k-tile-fallback {
+  filter: brightness(.38) saturate(.8);
+}
+/* 画像なしの記事は、文字を主役にしてタイルの中央寄りに大きめに出す */
+.k-tile-caption-text {
   inset: 0;
-  display: grid;
-  place-items: center;
-  font-size: 40px;
-  opacity: .35;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px 20px 18px;
+  background: linear-gradient(180deg, rgba(5, 10, 20, .1), rgba(5, 10, 20, .7));
+}
+.k-tile-caption-text .k-tile-excerpt {
+  -webkit-line-clamp: 3;
+}
+.k-tile-large .k-tile-caption-text {
+  padding: 36px 32px 28px;
+}
+.k-tile-large .k-tile-caption-text h3 { font-size: 28px; }
+.k-tile-large .k-tile-caption-text .k-tile-excerpt {
+  max-width: 640px;
+  font-size: 15px;
+  line-height: 1.8;
+  -webkit-line-clamp: 4;
 }
 .k-tile-caption {
   position: absolute;
@@ -166,6 +184,11 @@ const dateOf = (iso) => formatDateTime(iso).split(' ')[0]
   .k-tile-large h3 { font-size: 18px; }
   .k-tile h3 { font-size: 13px; }
   .k-tile-caption { padding: 30px 12px 10px; }
+  .k-tile-large .k-tile-caption-text { padding: 20px 16px 14px; }
+  .k-tile-large .k-tile-caption-text h3 { font-size: 20px; }
+  .k-tile-large .k-tile-caption-text .k-tile-excerpt { font-size: 13px; -webkit-line-clamp: 3; }
+  /* 小さいタイルは文字が入りきらないので抜粋は出さない */
+  .k-tile:not(.k-tile-large) .k-tile-excerpt { display: none; }
 }
 </style>
 
