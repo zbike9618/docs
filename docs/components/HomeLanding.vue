@@ -35,7 +35,7 @@ onUnmounted(() => heroObserver?.disconnect())
 
 <template>
   <main class="k-home">
-    <section ref="heroSection" class="k-hero" :style="{ '--k-hero-image': `url(${withBase('/hero-castle-v1.png')})` }">
+    <section ref="heroSection" class="k-hero" :style="{ '--k-hero-image': `url(${withBase('/hero-castle-v1.webp')})` }">
       <div class="k-hero-grid" aria-hidden="true"></div>
       <div class="k-orb k-orb-one" aria-hidden="true"></div>
       <div class="k-orb k-orb-two" aria-hidden="true"></div>
