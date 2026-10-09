@@ -25,6 +25,9 @@ const section = computed(() => {
   if (path.startsWith('/form')) {
     return { label: 'COMMUNITY', text: 'プレイヤーとともにつくる建国鯖' }
   }
+  if (path.startsWith('/vote')) {
+    return { label: 'COMMUNITY VOTE', text: 'みんなの一票で、建国鯖のこれからを決める' }
+  }
 
   return { label: 'OFFICIAL DOCUMENT', text: '建国鯖 公式ドキュメント' }
 })
