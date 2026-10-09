@@ -73,6 +73,11 @@ onUnmounted(() => heroObserver?.disconnect())
 
     <section id="join" class="k-join">
       <div class="k-shell">
+        <!-- 投票やイベントのバナー（管理画面で出し分け）。ファーストビューの直後に置いて目に入るようにする -->
+        <div class="k-join-events">
+          <EventBanner />
+        </div>
+
         <div class="k-section-heading k-heading-light">
           <p class="k-kicker">JOIN THE SERVER</p>
           <h2>3分で、この世界へ。</h2>
@@ -157,7 +162,6 @@ onUnmounted(() => heroObserver?.disconnect())
         <div class="k-news-card">
           <NewsList :limit="3" />
         </div>
-        <EventBanner />
       </div>
     </section>
 

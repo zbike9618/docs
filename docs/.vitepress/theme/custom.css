@@ -74,6 +74,9 @@ html { scroll-behavior: smooth; }
 .k-heading-light h2 { color: white; }
 .k-heading-light > p:last-child { color: #9ca8ba; }
 .k-join-layout { display: grid; grid-template-columns: 1.1fr .9fr; gap: 52px; margin-top: 46px; align-items: center; }
+/* バナーが1つも無いとき（Vue のコメントノードだけ）は余白ごと消す */
+.k-join-events { margin: -24px 0 64px; }
+.k-join-events:empty { display: none; }
 .k-connect-card { border: 1px solid #26364c; padding: 28px; background: linear-gradient(145deg, #111f32, #0d1929); box-shadow: 0 22px 50px rgba(0,0,0,.24); }
 .k-connect-head { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; font-weight: 800; }
 .k-connect-head b { margin-left: auto; color: #90a0b8; font-size: 10px; letter-spacing: .12em; }
@@ -187,8 +190,9 @@ html { scroll-behavior: smooth; }
   .k-update-head, .k-final-inner { align-items: flex-start; flex-direction: column; }
   .k-update-head { gap: 14px; }
   .k-news-card { margin-top: 25px; padding: 16px; }
-  .k-updates .event-banner { margin-top: 14px; }
-  .k-updates .event-content { padding: 18px; }
+  .k-join-events { margin: -8px 0 44px; }
+  .k-join-events .event-banner { margin-top: 14px; }
+  .k-join-events .event-content { padding: 18px; }
   .k-final-cta { padding: 62px 0; }
   .k-final-inner { gap: 25px; }
   .k-final-cta h2 { font-size: 29px; }
