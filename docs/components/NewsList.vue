@@ -58,7 +58,8 @@ const updatedLabel = (item) => {
   if (!at) return null
   const rel = relativeTime(at, now.value)
   if (!rel) return null
-  return `${rel}に${item.updatedAt && item.updatedAt !== item.createdAt ? '更新' : '公開'}`
+  const verb = item.updatedAt && item.updatedAt !== item.createdAt ? '更新' : '公開'
+  return rel === 'たった今' ? `たった今${verb}` : `${rel}に${verb}`
 }
 
 // 本文があるお知らせは記事ページ（news/view.md）へ。無ければ管理画面で入れたリンク先へ
