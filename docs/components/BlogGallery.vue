@@ -2,7 +2,7 @@
 // トップページのブログギャラリー。最新の記事を画像中心のタイルで並べる。記事が無いあいだはセクションごと出さない
 import { ref, onMounted } from 'vue'
 import { withBase } from 'vitepress'
-import { apiBase, imageUrl, SOURCE_LABELS } from './blogApi.js'
+import { apiBase, imageUrl, reactionSummary, SOURCE_LABELS } from './blogApi.js'
 import { formatDateTime } from './relativeTime.js'
 
 const props = defineProps({
@@ -52,6 +52,9 @@ const dateOf = (iso) => formatDateTime(iso).split(' ')[0]
               <b v-if="SOURCE_LABELS[p.source]">{{ SOURCE_LABELS[p.source] }}</b>
               <span>{{ p.authorName }}</span>
               <time :datetime="p.createdAt">{{ dateOf(p.createdAt) }}</time>
+              <span v-if="reactionSummary(p).length" class="k-tile-reactions">
+                <span v-for="r in reactionSummary(p)" :key="r.emoji">{{ r.emoji }} {{ r.count }}</span>
+              </span>
             </p>
           </div>
         </a>
@@ -160,6 +163,7 @@ const dateOf = (iso) => formatDateTime(iso).split(' ')[0]
   color: rgba(255, 255, 255, .7);
   font-size: 11px;
 }
+.k-tile-reactions { display: inline-flex; gap: 8px; color: rgba(255, 255, 255, .9); }
 .k-tile-meta b {
   padding: 0 7px;
   border-radius: 999px;

@@ -2,7 +2,7 @@
 // ブログ一覧（/blog）。カード形式でサムネイル・タイトル・書いた人・日付・抜粋を出す
 import { ref, onMounted } from 'vue'
 import { withBase } from 'vitepress'
-import { apiBase, imageUrl, SOURCE_LABELS } from './blogApi.js'
+import { apiBase, imageUrl, reactionSummary, SOURCE_LABELS } from './blogApi.js'
 import { formatDateTime } from './relativeTime.js'
 
 const props = defineProps({
@@ -46,6 +46,9 @@ const dateOf = (iso) => formatDateTime(iso).split(' ')[0]
           <span v-if="SOURCE_LABELS[p.source]" class="blog-source">{{ SOURCE_LABELS[p.source] }}</span>
           <span>{{ p.authorName }}</span>
           <time :datetime="p.createdAt">{{ dateOf(p.createdAt) }}</time>
+          <span v-if="reactionSummary(p).length" class="blog-reaction-sum">
+            <span v-for="r in reactionSummary(p)" :key="r.emoji">{{ r.emoji }} {{ r.count }}</span>
+          </span>
         </p>
       </div>
     </a>
@@ -141,6 +144,7 @@ const dateOf = (iso) => formatDateTime(iso).split(' ')[0]
   color: var(--vp-c-text-3);
   font-size: 12px;
 }
+.blog-reaction-sum { display: inline-flex; gap: 8px; margin-left: auto; color: var(--vp-c-text-2); }
 .blog-source {
   padding: 0 7px;
   border-radius: 999px;
