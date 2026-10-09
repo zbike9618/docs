@@ -1,12 +1,45 @@
 <script setup>
-import { ref, computed } from 'vue'
-import punishmentData from '../.vitepress/punishments.json'
+import { ref, computed, onMounted } from 'vue'
+import manualPunishments from '../.vitepress/punishments.json'
 import currentSeasonRaw from '../.vitepress/.status?raw'
 
 const currentSeason = computed(() => currentSeasonRaw.trim())
 
 // すべて表示するか
 const showAll = ref(false)
+
+// ゲーム内のBANはAPIから（ゲームから自動同期）。punishments.json は手動の記録（シーズンBAN等）用で、日付のある行だけ使う
+const banHistory = ref([])
+const loading = ref(true)
+const error = ref(false)
+
+onMounted(async () => {
+  try {
+    const apiBase = import.meta.env.VITE_API_URL || 'https://api.gozakura.org'
+    const res = await fetch(`${apiBase}/api/bans/history`)
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    banHistory.value = (await res.json()).map((b, i) => ({
+      id: `ban-${i}`,
+      date: b.bannedAt ? formatDate(b.bannedAt) : '-',
+      sortKey: b.bannedAt ?? b.seenAt ?? 0,
+      player: b.name,
+      reason: b.reason,
+      type: 'BAN',
+      expiry: b.finishTime,
+      endedAt: b.endedAt,
+    }))
+  } catch (e) {
+    console.error('Failed to fetch bans:', e)
+    error.value = true
+  } finally {
+    loading.value = false
+  }
+})
+
+const punishmentData = computed(() => [
+  ...banHistory.value,
+  ...manualPunishments.filter((p) => p.date).map((p) => ({ ...p, sortKey: new Date(p.date).getTime() })),
+])
 
 // 日時のフォーマット
 const formatDate = (dateString) => {
@@ -26,8 +59,10 @@ const getStatus = (p) => {
   if (p.type === 'シーズンBAN') {
     return p.season === currentSeason.value ? '執行中' : '解除済み'
   }
+  // 期限前に解除された
+  if (p.endedAt) return '解除済み'
   if (!p.expiry) return '--'
-  
+
   const exp = new Date(p.expiry)
   const now = new Date()
   
@@ -41,6 +76,7 @@ const getStatus = (p) => {
 // 残り時間の計算
 const getRemainingTime = (p) => {
   if (p.type === 'シーズンBAN') return p.season
+  if (p.endedAt) return `解除済み (${formatDate(p.endedAt)})`
   if (!p.expiry) return '永久 (なし)'
   
   const exp = new Date(p.expiry)
@@ -64,7 +100,7 @@ const getRemainingTime = (p) => {
 const displayPunishments = computed(() => {
   // 日時を元に動的にソート・フィルタリングする場合などに備え、
   // ここでステータス判定を含めてソート
-  const sorted = [...punishmentData].sort((a, b) => new Date(b.date) - new Date(a.date))
+  const sorted = [...punishmentData.value].sort((a, b) => b.sortKey - a.sortKey)
 
   if (showAll.value) {
     return sorted
@@ -81,7 +117,10 @@ const toggleShowAll = () => {
 
 <template>
   <div class="punishment-table-container">
-    <table>
+    <p v-if="loading" class="notice">読み込み中...</p>
+    <p v-else-if="error" class="notice">処罰履歴を取得できませんでした。時間をおいて再度お試しください。</p>
+    <p v-else-if="punishmentData.length === 0" class="notice">現在、処罰履歴はありません。</p>
+    <table v-if="punishmentData.length > 0">
       <thead>
         <tr>
           <th>日付</th>
@@ -117,6 +156,9 @@ const toggleShowAll = () => {
 .punishment-table-container {
   overflow-x: auto;
   margin: 20px 0;
+}
+.notice {
+  color: var(--vp-c-text-2);
 }
 table {
   width: 100%;

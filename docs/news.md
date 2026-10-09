@@ -10,7 +10,7 @@ import NewsList from './components/NewsList.vue'
 
 サーバーのアップデートやイベント情報など、これまでのお知らせはこちらで確認できます。
 
-<NewsList />
+<NewsList filterable />
 
 ## これからのお知らせ
 今後のアップデート情報やイベントスケジュールもこのページでお知らせしていきます。

@@ -48,6 +48,7 @@ export default defineConfig({
     nav: [
       { text: 'ホーム', link: '/' },
       { text: 'お知らせ', link: '/news' },
+      { text: 'ブログ', link: '/blog' },
       { text: 'アップデート', link: '/update' },
       { text: '投票', link: '/vote' },
       {

@@ -13,6 +13,9 @@ const section = computed(() => {
   if (path.startsWith('/news')) {
     return { label: 'WORLD NEWS', text: '建国鯖からの重要なお知らせと最新情報' }
   }
+  if (path.startsWith('/blog')) {
+    return { label: 'FIELD JOURNAL', text: 'サポーターが届ける、建国鯖のいまの様子' }
+  }
   if (path.startsWith('/update')) {
     return { label: 'CHANGELOG', text: '世界に加わった新機能とバランス調整の記録' }
   }
