@@ -461,12 +461,18 @@ html:not(.dark) .VPSidebarItem.is-active > .item .link > .text { color: #c93d62 
 .dark .k-updates .status-message.loading { color: #aeb9c8; background: #142236; }
 .dark .k-updates .status-message.error { color: #ff91ae; background: #351a23; }
 
-@media (max-width: 640px) {
-  .VPNavBar .container { max-width: 100%; padding: 0 12px 0 16px; }
-  .VPNavBarTitle { min-width: 0; max-width: calc(100vw - 76px); }
+/* ナビのサイト名を「建国鯖」に縮める。長いサイト名（約460px）のままだと、768〜959px は横にはみ出し、
+   960〜1040px 付近は右端のメニューが切れる。フォント差（Mac/iPad）も見込んで 1200px 未満は縮める（検索向けの <title> はそのまま） */
+@media (max-width: 1199px) {
+  .VPNavBarTitle { min-width: 0; }
   .VPNavBarTitle .title { min-width: 0; max-width: 100%; }
   .VPNavBarTitle .title span { min-width: 0; overflow: hidden; font-size: 0; white-space: nowrap; text-overflow: ellipsis; }
   .VPNavBarTitle .title span::after { content: "建国鯖"; font-size: 14px; letter-spacing: .02em; }
+}
+
+@media (max-width: 640px) {
+  .VPNavBar .container { max-width: 100%; padding: 0 12px 0 16px; }
+  .VPNavBarTitle { max-width: calc(100vw - 76px); }
   .VPNavBar .content { flex: 0 0 auto; min-width: 48px; }
   .VPNavBar .content-body { width: auto; }
   .VPNavBar .bug-badge { display: none !important; }
