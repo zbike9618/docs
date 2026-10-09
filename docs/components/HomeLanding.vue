@@ -71,14 +71,16 @@ onUnmounted(() => heroObserver?.disconnect())
       </div>
     </section>
 
-    <section id="join" class="k-join">
+    <section class="k-join">
       <div class="k-shell">
         <!-- 投票やイベントのバナー（管理画面で出し分け）。ファーストビューの直後に置いて目に入るようにする -->
         <div class="k-join-events">
           <EventBanner />
         </div>
 
+        <!-- 「参加する」ボタンの飛び先はバナーではなく参加方法の見出し -->
         <div class="k-section-heading k-heading-light">
+          <span id="join" class="k-join-anchor" aria-hidden="true"></span>
           <p class="k-kicker">JOIN THE SERVER</p>
           <h2>3分で、この世界へ。</h2>
           <p>マインクラフト統合版があれば、誰でも無料で参加できます。</p>

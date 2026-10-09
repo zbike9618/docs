@@ -77,6 +77,12 @@ html { scroll-behavior: smooth; }
 /* バナーが1つも無いとき（Vue のコメントノードだけ）は余白ごと消す */
 .k-join-events { margin: -24px 0 64px; }
 .k-join-events:empty { display: none; }
+/* 「参加する」の飛び先。VitePress はアンカーを画面上から 134px の位置に止めるので、アンカーを見出しより下に置いて
+   見出しを上に寄せ、上のバナーが見えないようにする。ナビが上に固定されるのは 960px 以上だけなので幅で分ける */
+.k-join-anchor { display: block; position: relative; top: 110px; height: 0; }
+@media (min-width: 960px) {
+  .k-join-anchor { top: 38px; }
+}
 .k-connect-card { border: 1px solid #26364c; padding: 28px; background: linear-gradient(145deg, #111f32, #0d1929); box-shadow: 0 22px 50px rgba(0,0,0,.24); }
 .k-connect-head { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; font-weight: 800; }
 .k-connect-head b { margin-left: auto; color: #90a0b8; font-size: 10px; letter-spacing: .12em; }
