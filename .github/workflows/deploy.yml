@@ -2,7 +2,7 @@ name: Deploy VitePress site to Pages & Local LXC
 
 on:
   push:
-    branches:
+    branches: 
       - main
       - pages
 
