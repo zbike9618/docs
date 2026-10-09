@@ -167,8 +167,11 @@ const dateOf = (iso) => formatDateTime(iso).split(' ')[0]
   .k-tile h3 { font-size: 13px; }
   .k-tile-caption { padding: 30px 12px 10px; }
 }
+</style>
 
-:global(.dark) .k-journal { background: #0b1626; }
-:global(.dark) .k-journal .k-section-heading h2 { color: #eef2f7; }
-:global(.dark) .k-journal .k-section-heading > p:last-child { color: #9eabba; }
+<style>
+/* ダークモード（html.dark）。scoped だと html 側のクラスを見られないので分けている */
+.dark .k-journal { background: #0b1626; }
+.dark .k-journal .k-section-heading h2 { color: #eef2f7; }
+.dark .k-journal .k-section-heading > p:last-child { color: #9eabba; }
 </style>
