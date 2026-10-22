@@ -1,9 +1,11 @@
-name: Deploy VitePress site to Pages & Local LXC
+name: Deploy VitePress site to GitHub Pages
 
+# 本番（www.gozakura.org）の公開は、CT111 の中のビルダー（ops/site-build）が行う。
+# 2026-10-22 から、main への push ではこの workflow は動かない（Tailscale 経由の rsync はやめた）。
+# ここに残っているのは、GitHub Pages 用（pages ブランチ、base が /docs/）のビルドだけ。
 on:
   push:
-    branches: 
-      - main
+    branches:
       - pages
 
 permissions:
@@ -12,7 +14,7 @@ permissions:
   id-token: write
 
 jobs:
-  build-and-deploy-lxc:
+  build-pages:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,62 +31,19 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # --------------------------------------------------
-      # 1. ローカルLXC用のビルドとデプロイ (base: '/')
-      # --------------------------------------------------
-      - name: Build with VitePress for LXC
-        if: github.ref == 'refs/heads/main'
-        run: npm run docs:build
-        env:
-          LXC_DEPLOY: true
-
-      # ビルドされたファイルを退避
-      - name: Copy LXC dist to separate folder
-        if: github.ref == 'refs/heads/main'
-        run: cp -r docs/.vitepress/dist ./dist-lxc
-
-      # OAuth client（Auth Keys: Write, tag:ci）で毎回使い捨ての鍵を作る。auth key と違って期限切れにならない
-      # 192.168.11.0/24 へは CT107 nginxproxymanager の subnet router 経由で届く（v4 は --accept-routes を自分で付けるので args には書かない）
-      - name: Tailscale
-        if: github.ref == 'refs/heads/main'
-        uses: tailscale/github-action@v4
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
-
-      - name: Setup SSH
-        if: github.ref == 'refs/heads/main'
-        run: |
-          mkdir -p ~/.ssh
-          printf "%s\n" "${{ secrets.LXC_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          echo "StrictHostKeyChecking no" >> ~/.ssh/config
-
-      # 退避させたフォルダからLXCへ転送
-      - name: Deploy to LXC via rsync
-        if: github.ref == 'refs/heads/main'
-        run: rsync -avz --delete dist-lxc/ ${{ secrets.LXC_USER }}@192.168.11.120:/var/www/html/
-
-      # --------------------------------------------------
-      # 2. GitHub Pages用のビルドとアップロード (base: '/docs/')
-      # --------------------------------------------------
       # キャッシュと前回のビルド成果物を完全に削除して、確実に再ビルドさせる
       - name: Clean VitePress cache and dist
-        if: github.ref == 'refs/heads/pages'
         run: rm -rf docs/.vitepress/dist docs/.vitepress/.vitepress-cache
 
+      # お知らせなどの中身は、ビルド時に公開 API（https://api.gozakura.org）から取って焼く
       - name: Build with VitePress for GitHub Pages
-        if: github.ref == 'refs/heads/pages'
         run: npm run docs:build
 
       # 念のため Pages 用にビルドされた中身があるかログで確認
       - name: Check dist directory
-        if: github.ref == 'refs/heads/pages'
         run: ls -la docs/.vitepress/dist
 
       - name: Upload artifact for GitHub Pages
-        if: github.ref == 'refs/heads/pages'
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/.vitepress/dist
@@ -92,10 +51,9 @@ jobs:
   deploy-pages:
     environment:
       name: github-pages
-    needs: build-and-deploy-lxc
+    needs: build-pages
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/pages'
         id: deployment
         uses: actions/deploy-pages@v4

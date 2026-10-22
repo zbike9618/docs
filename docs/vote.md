@@ -1,4 +1,6 @@
 ---
+title: 投票
+description: 新しい機能やルールについて、みんなの意見を聞くための投票ページです。
 outline: false
 ---
 

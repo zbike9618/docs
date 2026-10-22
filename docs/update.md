@@ -1,4 +1,6 @@
 ---
+title: アップデート一覧
+description: CountryWars（国家戦争システム）のバランス調整・不具合修正・新機能追加など、ゲーム内容のアップデート履歴です。
 outline: deep
 ---
 

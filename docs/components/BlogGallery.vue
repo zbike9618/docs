@@ -2,6 +2,7 @@
 // トップページのブログギャラリー。最新の記事を画像中心のタイルで並べる。記事が無いあいだはセクションごと出さない
 import { ref, onMounted } from 'vue'
 import { withBase } from 'vitepress'
+import { data as bakedPosts } from '../data/blog.data.js'
 import { apiBase, imageUrl, reactionSummary, SOURCE_LABELS } from './blogApi.js'
 import { formatDateTime } from './relativeTime.js'
 
@@ -9,15 +10,17 @@ const props = defineProps({
   limit: { type: Number, default: 5 }
 })
 
-const posts = ref([])
+// 最初に見えるのはビルド時に API から取って HTML に焼いたもの（検索エンジンにも読める）。
+// ページを開いたあとで API を取り直し、リアクションの数なども最新にする
+const posts = ref(bakedPosts.slice(0, props.limit))
 
 onMounted(async () => {
   try {
     const res = await fetch(`${apiBase()}/api/blog`)
     if (res.ok) posts.value = (await res.json()).slice(0, props.limit)
   } catch (e) {
-    // トップページなので、取れなければ何も出さない
-    console.error('Failed to fetch blog:', e)
+    // 取れなくても、焼いた分がそのまま残る
+    console.warn('Failed to refresh blog:', e)
   }
 })
 
@@ -40,7 +43,7 @@ const dateOf = (iso) => formatDateTime(iso).split(' ')[0]
         <a
           v-for="(p, i) in posts" :key="p.id"
           class="k-tile" :class="{ 'k-tile-large': i === 0 }"
-          :href="withBase(`/blog/view?id=${p.id}`)"
+          :href="withBase(`/blog/${p.id}`)"
         >
           <img v-if="p.thumbnail" :src="imageUrl(p.thumbnail)" alt="" loading="lazy">
           <!-- 画像が無い記事は、トップの城の画像を暗くして敷き、本文の抜粋を見せる -->

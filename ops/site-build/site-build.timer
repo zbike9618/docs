@@ -1,0 +1,11 @@
+[Unit]
+Description=毎分 site-build を呼ぶ（docs の push の検知、取りこぼしの回収、1日1回の強制ビルド）
+
+[Timer]
+# 何もすることが無いときは build.sh が数十ミリ秒で終わる（git ls-remote を1回打つだけ）
+OnCalendar=minutely
+AccuracySec=5s
+Unit=site-build.service
+
+[Install]
+WantedBy=timers.target

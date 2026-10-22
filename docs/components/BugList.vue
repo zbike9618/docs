@@ -1,10 +1,12 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { data as bakedBugs } from '../data/bugs.data.js'
 
 // すべてのバグを表示するかどうかを管理する変数（初期値はfalse）
 const showAll = ref(false)
-const bugData = ref([])
-const loading = ref(true)
+// 最初に見える一覧はビルド時に API から取って HTML に焼いたもの（検索エンジンにも読める）。
+// ページを開いたあとで API を取り直し、新しければ差し替える（取れなくても焼いた一覧が残る）
+const bugData = ref(bakedBugs)
 const error = ref(false)
 
 onMounted(async () => {
@@ -13,14 +15,12 @@ onMounted(async () => {
     const res = await fetch(`${apiBase}/api/bugs`)
     if (res.ok) {
       bugData.value = await res.json()
-    } else {
+    } else if (bugData.value.length === 0) {
       error.value = true
     }
   } catch (e) {
-    console.error('Failed to fetch bugs:', e)
-    error.value = true
-  } finally {
-    loading.value = false
+    console.warn('Failed to refresh bugs:', e)
+    if (bugData.value.length === 0) error.value = true
   }
 })
 
@@ -56,10 +56,7 @@ const toggleShowAll = () => {
 </script>
 
 <template>
-  <div v-if="loading" class="status-message loading">
-    ⏳ 不具合情報を読み込んでいます...
-  </div>
-  <div v-else-if="error" class="status-message error">
+  <div v-if="error" class="status-message error">
     ⚠️ 不具合情報の取得に失敗しました。時間をおいて再読み込みしてください。
   </div>
   <div v-else class="bug-table-container">

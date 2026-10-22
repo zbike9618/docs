@@ -1,0 +1,11 @@
+[Unit]
+Description=管理画面での保存を見つけたら site-build を起動する
+StartLimitIntervalSec=0
+
+[Path]
+# gozakura-api が、お知らせ・アップデート・不具合・ブログを保存するたびにこのファイルを更新する
+PathModified=/var/lib/site-build/requested
+Unit=site-build.service
+
+[Install]
+WantedBy=multi-user.target
