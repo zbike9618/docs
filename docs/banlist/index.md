@@ -1,6 +1,9 @@
 ---
 title: 処罰履歴
 description: サーバー内で処罰されたプレイヤーの履歴一覧です。
+# プレイヤー名が載るページなので、検索結果には出さない（config.mts が robots メタとして出す。sitemap からも外している）
+# robots.txt では止めない（止めると noindex が読まれず、かえって残ることがある）
+robots: noindex, follow
 ---
 
 # ⚖️ 処罰履歴
