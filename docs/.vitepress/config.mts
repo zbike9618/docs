@@ -62,7 +62,8 @@ export default defineConfig({
           const at = lastmod.get(key)
           return at ? { ...item, url: key, lastmod: new Date(at).toISOString() } : { ...item, url: key }
         })
-        .filter((item) => !/^404$/.test(item.url))
+        // 404 と、検索に出さないページ（処罰履歴: プレイヤー名が載る。frontmatter の robots: noindex と対）は載せない
+        .filter((item) => !/^(404|banlist(\/|$))/.test(item.url))
     }
   },
 
