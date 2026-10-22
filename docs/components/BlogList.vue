@@ -2,6 +2,7 @@
 // ブログ一覧（/blog）。カード形式でサムネイル・タイトル・書いた人・日付・抜粋を出す
 import { ref, onMounted } from 'vue'
 import { withBase } from 'vitepress'
+import { data as bakedPosts } from '../data/blog.data.js'
 import { apiBase, imageUrl, reactionSummary, SOURCE_LABELS } from './blogApi.js'
 import { formatDateTime } from './relativeTime.js'
 
@@ -9,19 +10,21 @@ const props = defineProps({
   limit: { type: Number, default: 0 }
 })
 
-const posts = ref([])
-const state = ref('loading') // loading | ok | error
+const limited = (all) => (props.limit > 0 ? all.slice(0, props.limit) : all)
+
+// 最初に見える一覧はビルド時に API から取って HTML に焼いたもの（検索エンジンにも読める）。
+// ページを開いたあとで API を取り直し、リアクションの数なども最新にする（取れなくても焼いた一覧が残る）
+const posts = ref(limited(bakedPosts))
+const state = ref('ok') // ok | error
 
 onMounted(async () => {
   try {
     const res = await fetch(`${apiBase()}/api/blog`)
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    const all = await res.json()
-    posts.value = props.limit > 0 ? all.slice(0, props.limit) : all
-    state.value = 'ok'
+    posts.value = limited(await res.json())
   } catch (e) {
-    console.error('Failed to fetch blog:', e)
-    state.value = 'error'
+    console.warn('Failed to refresh blog:', e)
+    if (posts.value.length === 0) state.value = 'error'
   }
 })
 
@@ -29,11 +32,10 @@ const dateOf = (iso) => formatDateTime(iso).split(' ')[0]
 </script>
 
 <template>
-  <div v-if="state === 'loading'" class="status-message loading">⏳ 記事を読み込んでいます...</div>
-  <div v-else-if="state === 'error'" class="status-message error">⚠️ 記事の取得に失敗しました。時間をおいて再読み込みしてください。</div>
+  <div v-if="state === 'error'" class="status-message error">⚠️ 記事の取得に失敗しました。時間をおいて再読み込みしてください。</div>
   <div v-else-if="posts.length === 0" class="status-message empty">まだ記事はありません。</div>
   <div v-else class="blog-grid">
-    <a v-for="p in posts" :key="p.id" class="blog-card" :href="withBase(`/blog/view?id=${p.id}`)">
+    <a v-for="p in posts" :key="p.id" class="blog-card" :href="withBase(`/blog/${p.id}`)">
       <div class="blog-thumb">
         <img v-if="p.thumbnail" :src="imageUrl(p.thumbnail)" alt="" loading="lazy">
         <!-- 画像が無い記事はトップの城の画像を暗くして代わりに使う -->

@@ -1,5 +1,6 @@
 ---
 layout: home
+titleTemplate: false
 description: マインクラフト統合版の建国・戦争・経済サーバー。Switch、スマホ、PlayStation、Xbox、PCから無料で参加できます。
 ---
 

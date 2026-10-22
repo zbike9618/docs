@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { withBase } from 'vitepress'
+import { data as bakedUpdates } from '../data/updates.data.js'
 
 const props = defineProps({
   limit: {
@@ -9,8 +10,9 @@ const props = defineProps({
   }
 })
 
-const updateData = ref([])
-const loading = ref(true)
+// 最初に見える一覧はビルド時に API から取って HTML に焼いたもの（検索エンジンにも読める）。
+// ページを開いたあとで API を取り直し、新しければ差し替える（取れなくても焼いた一覧が残る）
+const updateData = ref(bakedUpdates)
 const error = ref(false)
 
 onMounted(async () => {
@@ -19,14 +21,12 @@ onMounted(async () => {
     const res = await fetch(`${apiBase}/api/updates`)
     if (res.ok) {
       updateData.value = await res.json()
-    } else {
+    } else if (updateData.value.length === 0) {
       error.value = true
     }
   } catch (e) {
-    console.error('Failed to fetch updates:', e)
-    error.value = true
-  } finally {
-    loading.value = false
+    console.warn('Failed to refresh updates:', e)
+    if (updateData.value.length === 0) error.value = true
   }
 })
 
@@ -36,10 +36,7 @@ const displayUpdates = computed(() => {
 </script>
 
 <template>
-  <div v-if="loading" class="status-message loading">
-    ⏳ アップデート情報を読み込んでいます...
-  </div>
-  <div v-else-if="error" class="status-message error">
+  <div v-if="error" class="status-message error">
     ⚠️ アップデート情報の取得に失敗しました。時間をおいて再読み込みしてください。
   </div>
   <ul v-else class="update-list">

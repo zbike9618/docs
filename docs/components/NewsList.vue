@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { withBase } from 'vitepress'
+import { data as bakedNews } from '../data/news.data.js'
 import { tagColor } from './newsTags.js'
 import { relativeTime, formatDateTime } from './relativeTime.js'
 
@@ -16,31 +17,36 @@ const props = defineProps({
   }
 })
 
-const newsData = ref([])
-const loading = ref(true)
+// 最初に見える一覧はビルド時に API から取って HTML に焼いたもの（検索エンジンにも読める）。
+// ページを開いたあとで API を取り直し、新しければ差し替える（取れなくても焼いた一覧が残る）
+const newsData = ref(bakedNews)
 const error = ref(false)
 const activeTag = ref(null)
 
-// 「3分前に更新」を1分ごとに更新する
-const now = ref(Date.now())
+// API の一覧には本文が入っている。ビルド時の一覧と同じ形（hasBody だけ持つ）にそろえる
+const toListItem = ({ body, ...rest }) => ({ ...rest, hasBody: Boolean(body) })
+
+// 「3分前に更新」は、ビルド時の時刻では意味がないのでブラウザで開いてから出す
+const mounted = ref(false)
+const now = ref(0)
 let timer = null
 onUnmounted(() => clearInterval(timer))
 
 onMounted(async () => {
+  mounted.value = true
+  now.value = Date.now()
   timer = setInterval(() => { now.value = Date.now() }, 60000)
   try {
     const apiBase = import.meta.env.VITE_API_URL || 'https://api.gozakura.org'
     const res = await fetch(`${apiBase}/api/news`)
     if (res.ok) {
-      newsData.value = await res.json()
-    } else {
+      newsData.value = (await res.json()).map(toListItem)
+    } else if (newsData.value.length === 0) {
       error.value = true
     }
   } catch (e) {
-    console.error('Failed to fetch news:', e)
-    error.value = true
-  } finally {
-    loading.value = false
+    console.warn('Failed to refresh news:', e)
+    if (newsData.value.length === 0) error.value = true
   }
 })
 
@@ -54,6 +60,7 @@ const displayNews = computed(() => {
 
 // 作成・更新日時があるお知らせだけ「〜前に更新」を出す（導入前のお知らせは日付のみ）
 const updatedLabel = (item) => {
+  if (!mounted.value) return null
   const at = item.updatedAt || item.createdAt
   if (!at) return null
   const rel = relativeTime(at, now.value)
@@ -62,15 +69,15 @@ const updatedLabel = (item) => {
   return rel === 'たった今' ? `たった今${verb}` : `${rel}に${verb}`
 }
 
-// 本文があるお知らせは記事ページ（news/view.md）へ。無ければ管理画面で入れたリンク先へ
-const pageOf = (item) => (item.body ? `/news/view?id=${item.id}` : item.link)
+// 管理画面に旧形式のリンク（/news/view?id=20）が入っていても、記事ページ（/news/20）に直す
+const modernLink = (link) => (link ? link.replace(/^\/news\/view\?id=(\d+)$/, '/news/$1') : link)
+
+// 本文があるお知らせは記事ページ（news/[id].md）へ。無ければ管理画面で入れたリンク先へ
+const pageOf = (item) => (item.hasBody ? `/news/${item.id}` : modernLink(item.link))
 </script>
 
 <template>
-  <div v-if="loading" class="status-message loading">
-    ⏳ お知らせを読み込んでいます...
-  </div>
-  <div v-else-if="error" class="status-message error">
+  <div v-if="error" class="status-message error">
     ⚠️ お知らせの取得に失敗しました。時間をおいて再読み込みしてください。
   </div>
   <div v-else-if="newsData.length === 0" class="status-message empty">

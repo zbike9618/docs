@@ -31,31 +31,12 @@ export const reactionSummary = (post) => (post.reactions || [])
 // 書いた場所。今は管理画面だけ。将来プレイヤーが書けるようになったら 'player' が増える
 export const SOURCE_LABELS = { admin: 'admin' }
 
+// 本文（Markdown）→ HTML。ビルド時に焼くのと同じ変換（shared/markdown.js）を、管理画面で直した直後の差し替えにも使う。
+// markdown-it は重いので、差し替えが必要になったときだけ読み込む
 let md = null
-export async function blogRenderer() {
+export async function articleRenderer() {
   if (md) return md
-  const { default: MarkdownIt } = await import('markdown-it')
-  // html: false なので本文に書いたタグは文字のまま表示される（スクリプトは動かない）
-  md = new MarkdownIt({ html: false, linkify: true, breaks: true })
-  const renderToken = (tokens, idx, options, env, self) => self.renderToken(tokens, idx, options)
-  const defaultLinkOpen = md.renderer.rules.link_open || renderToken
-  md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
-    const token = tokens[idx]
-    const href = token.attrGet('href') || ''
-    if (/^https?:\/\//.test(href)) {
-      token.attrSet('target', '_blank')
-      token.attrSet('rel', 'noopener noreferrer')
-    } else if (href.startsWith('/') && !href.startsWith('//')) {
-      token.attrSet('href', withBase(href))
-    }
-    return defaultLinkOpen(tokens, idx, options, env, self)
-  }
-  const defaultImage = md.renderer.rules.image
-  md.renderer.rules.image = (tokens, idx, options, env, self) => {
-    const token = tokens[idx]
-    token.attrSet('src', imageUrl(token.attrGet('src') || ''))
-    token.attrSet('loading', 'lazy')
-    return defaultImage(tokens, idx, options, env, self)
-  }
+  const { createMarkdown } = await import('../shared/markdown.js')
+  md = createMarkdown({ base: withBase('/'), apiBase: apiBase() })
   return md
 }

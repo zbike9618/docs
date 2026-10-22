@@ -1,15 +1,24 @@
 <script setup>
-// ブログの記事ページ（/blog/view?id=<id>）。本文は管理画面で書いた Markdown を API から取ってきて表示する
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useRouter, withBase } from 'vitepress'
-import { apiBase, blogRenderer, getVoterId, SOURCE_LABELS } from './blogApi.js'
+// ブログの記事ページ（/blog/<id>）。本文はビルド時に API から取って HTML にしてある（検索エンジンにも読める）。
+// ページを開いたあとで API を取り直し、リアクション（数・自分が押したもの）を最新にする。
+// 管理画面で直した直後（再ビルド前）なら、本文も新しい内容に差し替える。
+import { ref, computed, watch, onMounted } from 'vue'
+import { withBase } from 'vitepress'
+import { apiBase, articleRenderer, getVoterId, SOURCE_LABELS } from './blogApi.js'
 import { formatDateTime } from './relativeTime.js'
 
-const post = ref(null)
-const html = ref('')
-const state = ref('loading') // loading | ok | notfound | error
+const props = defineProps({
+  // ビルド時に作った記事（docs/blog/[id].paths.js の params）
+  article: { type: Object, required: true }
+})
+
+const live = ref(null) // API から取り直した内容（リアクション・自分が押した絵文字・直したあとの本文）
+const gone = ref(false) // 取り直したら非公開か削除になっていた
 const reacting = ref(false)
 const reactError = ref('')
+
+// ビルド時の内容に、取り直した内容を重ねたもの
+const post = computed(() => ({ myReactions: [], ...props.article, ...(live.value || {}) }))
 
 // 同じ絵文字をもう一度押すと取り消し
 const react = async (emoji) => {
@@ -17,14 +26,14 @@ const react = async (emoji) => {
   reacting.value = true
   reactError.value = ''
   try {
-    const res = await fetch(`${apiBase()}/api/blog/${post.value.id}/reactions`, {
+    const res = await fetch(`${apiBase()}/api/blog/${props.article.id}/reactions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Voter-Id': getVoterId() },
       body: JSON.stringify({ emoji }),
     })
     const data = await res.json().catch(() => ({}))
     if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
-    Object.assign(post.value, data)
+    live.value = { ...(live.value || {}), ...data }
   } catch (e) {
     reactError.value = e.message
   } finally {
@@ -32,54 +41,45 @@ const react = async (emoji) => {
   }
 }
 
-const load = async () => {
-  const id = new URLSearchParams(location.search).get('id')
-  if (!/^\d+$/.test(id || '')) {
-    state.value = 'notfound'
-    return
-  }
-  state.value = 'loading'
+const refresh = async () => {
+  const id = props.article.id
+  live.value = null
+  gone.value = false
   try {
     const res = await fetch(`${apiBase()}/api/blog/${id}`, { headers: { 'X-Voter-Id': getVoterId() } })
+    if (id !== props.article.id) return
     if (res.status === 404) {
-      state.value = 'notfound'
+      gone.value = true
       return
     }
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    if (!res.ok) return
     const data = await res.json()
-    html.value = (await blogRenderer()).render(data.body || '')
-    post.value = data
-    state.value = 'ok'
-    document.title = `${data.title} | ブログ | 建国鯖`
+    if (id !== props.article.id) return
+    const next = { reactions: data.reactions, myReactions: data.myReactions || [] }
+    if (data.updatedAt !== props.article.updatedAt) {
+      Object.assign(next, {
+        title: data.title,
+        authorName: data.authorName,
+        source: data.source,
+        updatedAt: data.updatedAt,
+        html: (await articleRenderer()).render(data.body || ''),
+      })
+      document.title = `${data.title} | ブログ | 建国鯖`
+    }
+    if (id === props.article.id) live.value = next
   } catch (e) {
-    console.error('Failed to fetch blog post:', e)
-    state.value = 'error'
+    // 取り直せなくても、ビルド時の内容のまま読める
+    console.warn('Failed to refresh blog post:', e)
   }
 }
 
-// 記事から別の記事へ移ったときや戻る/進むでは、同じページのままURLの id だけ変わるので読み直す
-const router = useRouter()
-let previousHook
-onMounted(() => {
-  previousHook = router.onAfterRouteChange
-  router.onAfterRouteChange = async (href) => {
-    await previousHook?.(href)
-    if (/\/blog\/view(\.html)?$/.test(location.pathname)) load()
-  }
-  load()
-})
-onUnmounted(() => {
-  router.onAfterRouteChange = previousHook
-})
+onMounted(refresh)
+// 記事から別の記事へ移ったときは、同じコンポーネントのまま article だけ入れ替わる
+watch(() => props.article.id, refresh)
 </script>
 
 <template>
-  <div v-if="state === 'loading'" class="status-message loading">⏳ 記事を読み込んでいます...</div>
-  <div v-else-if="state === 'notfound'" class="status-message error">
-    ⚠️ この記事は見つかりませんでした。非公開になったか、URLが間違っている可能性があります。
-  </div>
-  <div v-else-if="state === 'error'" class="status-message error">⚠️ 記事の取得に失敗しました。時間をおいて再読み込みしてください。</div>
-  <article v-else class="blog-article">
+  <article v-if="!gone" class="blog-article">
     <p class="blog-meta">
       <span v-if="SOURCE_LABELS[post.source]" class="blog-source">{{ SOURCE_LABELS[post.source] }}</span>
       <span>{{ post.authorName }}</span>
@@ -87,7 +87,7 @@ onUnmounted(() => {
       <span v-if="post.updatedAt !== post.createdAt" class="blog-updated">（{{ formatDateTime(post.updatedAt) }} 更新）</span>
     </p>
     <h1>{{ post.title }}</h1>
-    <div class="blog-body" v-html="html"></div>
+    <div class="blog-body" v-html="post.html"></div>
 
     <div class="blog-reactions" role="group" aria-label="リアクション">
       <button
@@ -102,6 +102,9 @@ onUnmounted(() => {
     </div>
     <p v-if="reactError" class="blog-react-error">{{ reactError }}</p>
   </article>
+  <div v-else class="status-message error">
+    ⚠️ この記事は非公開になったか、削除されました。
+  </div>
 
   <p class="back-link">
     <a :href="withBase('/blog')">← ブログ一覧に戻る</a>

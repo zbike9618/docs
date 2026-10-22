@@ -1,0 +1,21 @@
+[Unit]
+Description=建国鯖サイトのビルド（API の中身を HTML に焼いて公開を差し替える）
+After=network-online.target
+Wants=network-online.target
+# 管理画面で続けて保存したときに path ユニットが起動回数の上限で止まらないよう、上限なしにする
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+User=sitebuild
+Group=sitebuild
+EnvironmentFile=-/etc/site-build.env
+Environment=HOME=/opt/site-build
+ExecStart=/opt/site-build/build.sh
+TimeoutStartSec=600
+
+# 本番の API・nginx と同じマシンで動かすので、暴走しても巻き込まないよう上限を付ける
+Nice=10
+CPUQuota=80%
+MemoryMax=700M
+NoNewPrivileges=true
