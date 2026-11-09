@@ -1,5 +1,5 @@
 import { defineConfig, type HeadConfig } from 'vitepress'
-import { BASE, SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '../data/site.js'
+import { BASE, SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE, DISCORD_URL, YOUTUBE_URL } from '../data/site.js'
 import { fetchList } from '../data/api.js'
 
 const basePathes = BASE
@@ -193,8 +193,8 @@ export default defineConfig({
       }
     ],
     socialLinks: [
-      { icon: 'discord', link: 'https://discord.gg/2Cx8Xm4ws6' },
-      { icon: 'youtube', link: 'https://www.youtube.com/@Y-gozakura' }
+      { icon: 'discord', link: DISCORD_URL, ariaLabel: 'Discord' },
+      { icon: 'youtube', link: YOUTUBE_URL, ariaLabel: 'YouTube' }
     ]
   },
   vite: {

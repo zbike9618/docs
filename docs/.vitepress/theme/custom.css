@@ -94,7 +94,9 @@ html { scroll-behavior: smooth; }
 .k-port span { color: #77869d; font-size: 10px; letter-spacing: .2em; }
 .k-port strong { font-family: monospace; }
 .k-connect-card > p { margin-top: 22px; color: #8997ab; font-size: 13px; }
-.k-connect-card > a { display: inline-block; margin-top: 10px; color: #ef7596; font-size: 13px; font-weight: 700; }
+.k-connect-links { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 10px; }
+.k-connect-links a { color: #ef7596; font-size: 13px; font-weight: 700; }
+.k-connect-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .k-steps { padding: 0; margin: 0; list-style: none; }
 .k-steps li { display: grid; grid-template-columns: 54px 1fr; gap: 20px; align-items: start; padding: 21px 0; border-bottom: 1px solid #263448; }
 .k-steps li > span { color: #d5aa5c; font: 800 12px/1 monospace; letter-spacing: .15em; }
@@ -122,6 +124,10 @@ html { scroll-behavior: smooth; }
 .k-final-cta { padding: 82px 0; color: white; background: linear-gradient(125deg, #101d2d, #381a29); }
 .k-final-inner { display: flex; align-items: center; justify-content: space-between; gap: 48px; }
 .k-final-cta h2 { margin-top: 12px; color: white; border: 0; font-size: clamp(30px, 4vw, 48px); line-height: 1.4; }
+.k-final-actions { display: flex; flex-wrap: wrap; gap: 12px; flex: none; }
+.k-button-discord { gap: 10px; }
+.k-button-discord .k-brand-icon { font-size: 20px; }
+.k-button-discord:hover { border-color: #5865f2 !important; background: #5865f2 !important; color: white !important; }
 .k-mobile-dock { display: none; }
 
 @media (max-width: 900px) {
@@ -231,7 +237,11 @@ html { scroll-behavior: smooth; }
   .k-mobile-dock-status > span:last-child { display: flex; flex-direction: column; }
   .k-mobile-dock-status small { color: #8491a4; font-size: 8px; letter-spacing: .12em; }
   .k-mobile-dock-status strong { margin-top: 1px; font-size: 13px; }
-  .k-mobile-dock > a { display: flex; align-items: center; gap: 16px; min-height: 44px; padding: 0 18px; border-radius: 5px; color: white; background: var(--k-pink); font-size: 13px; font-weight: 900; }
+  .k-mobile-dock-actions { display: flex; align-items: center; gap: 8px; }
+  .k-mobile-dock .k-dock-join { display: flex; align-items: center; gap: 16px; min-height: 44px; padding: 0 18px; border-radius: 5px; color: white; background: var(--k-pink); font-size: 13px; font-weight: 900; }
+  .k-mobile-dock .k-dock-discord { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 5px; color: white; background: #5865f2; font-size: 22px; }
+  .k-final-actions { width: 100%; }
+  .k-final-actions .k-button { flex: 1 1 200px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -412,6 +422,69 @@ html:not(.dark) .VPSidebar .group { border-top-color: #dedad2 !important; }
 html:not(.dark) .VPSidebarItem .text { color: #606977 !important; }
 html:not(.dark) .VPSidebarItem.level-0 > .item > .text { color: #172033 !important; }
 html:not(.dark) .VPSidebarItem.is-active > .item .link > .text { color: #c93d62 !important; }
+
+/* Light mode: home. トップのヒーロー・参加方法・最後の案内は暗い配色が基本なので、ライトのときだけ明るくする
+   （以前はここが無く、ライトにしてもナビの帯しか変わらなかった） */
+html:not(.dark) .k-hero {
+  color: var(--k-ink);
+  background-image:
+    linear-gradient(90deg, rgba(248,245,239,.97) 0%, rgba(248,245,239,.9) 36%, rgba(248,245,239,.35) 62%, rgba(248,245,239,0) 100%),
+    var(--k-hero-image);
+}
+html:not(.dark) .k-hero::after { background: linear-gradient(transparent, rgba(255,255,255,.92)); }
+html:not(.dark) .k-hero-grid { opacity: .05; background-image: linear-gradient(rgba(23,32,51,.8) 1px, transparent 1px), linear-gradient(90deg, rgba(23,32,51,.8) 1px, transparent 1px); }
+html:not(.dark) .k-orb-one { border-color: rgba(173,47,82,.14); }
+html:not(.dark) .k-eyebrow { color: #a8792a; }
+html:not(.dark) .k-eyebrow span { background: #a8792a; }
+html:not(.dark) .k-hero h1 { color: #111d2e; }
+html:not(.dark) .k-hero h1 em,
+html:not(.dark) .k-final-cta h2 em { color: #d23f67; }
+html:not(.dark) .k-lead { color: #4d5665; }
+html:not(.dark) .k-button-ghost { color: var(--k-ink) !important; border-color: rgba(23,32,51,.22); background: rgba(255,255,255,.65); }
+html:not(.dark) .k-button-ghost:hover { border-color: rgba(23,32,51,.5); background: #fff; }
+html:not(.dark) .k-platforms { color: #6b7483; }
+html:not(.dark) .k-platforms span { color: #4d5665; }
+html:not(.dark) .k-platforms b { border-left-color: #cfc9bf; }
+html:not(.dark) .k-floating-card { color: var(--k-ink); border-color: rgba(23,32,51,.1); background: rgba(255,255,255,.9); box-shadow: 0 16px 38px rgba(16,28,45,.18); }
+html:not(.dark) .k-floating-card small { color: #7b8290; }
+html:not(.dark) .k-card-icon { color: #b0832f; }
+
+html:not(.dark) .k-join { color: var(--k-ink); background: #fff; }
+html:not(.dark) .k-heading-light h2 { color: var(--k-ink); }
+html:not(.dark) .k-heading-light > p:last-child { color: #70798a; }
+html:not(.dark) .k-connect-card { border-color: #e1ddd5; background: #faf8f4; box-shadow: 0 22px 50px rgba(16,28,45,.08); }
+html:not(.dark) .k-connect-head b,
+html:not(.dark) .k-connect-card label,
+html:not(.dark) .k-port span { color: #7b8290; }
+html:not(.dark) .k-address-row code { color: #8a5d12; border-color: #dcd6cc; background: #fff; }
+html:not(.dark) .k-connect-card > p { color: #5d6675; }
+html:not(.dark) .k-connect-links a { color: #c93d62; }
+html:not(.dark) .k-steps li { border-bottom-color: #e6e1d8; }
+html:not(.dark) .k-steps li > span { color: #b0832f; }
+html:not(.dark) .k-steps h3 { color: var(--k-ink); }
+html:not(.dark) .k-steps p { color: #6b7483; }
+/* 状態ごとの枠と背景（ServerStatus 側）を消さないよう、詳細度を .k-join .server-status と同じにしている */
+:where(html:not(.dark)) .k-join .server-status { background: #faf8f4; border-color: #e1ddd5; }
+
+html:not(.dark) .k-final-cta { color: var(--k-ink); background: linear-gradient(125deg, #f6f1e8, #f7e4ea); }
+html:not(.dark) .k-final-cta h2 { color: #111d2e; }
+
+@media (max-width: 640px) {
+  html:not(.dark) .k-hero {
+    background-image:
+      linear-gradient(180deg, rgba(248,245,239,.05) 0%, rgba(248,245,239,.25) 30%, rgba(248,245,239,.93) 66%, #fff 100%),
+      var(--k-hero-image);
+  }
+  html:not(.dark) .k-steps li { border-color: #e6e1d8; background: #faf8f4; }
+  html:not(.dark) .k-mobile-dock { color: var(--k-ink); border-color: rgba(23,32,51,.12); background: rgba(255,255,255,.94); box-shadow: 0 16px 40px rgba(16,28,45,.2); }
+  html:not(.dark) .k-mobile-dock-status small { color: #6b7483; }
+}
+
+/* Light mode: 各ページ上部の帯も明るくする */
+html:not(.dark) .k-doc-banner { color: var(--k-ink); background: linear-gradient(115deg, #f7f2e9, #f4ecdf 68%, #f6e3e8); }
+html:not(.dark) .k-doc-banner::before { border-color: rgba(173,47,82,.16); }
+html:not(.dark) .k-doc-banner span { color: #a8792a; }
+html:not(.dark) .k-doc-banner p { color: #5d6675; }
 
 /* Dark mode: every reading surface and component receives a dark counterpart. */
 .dark .VPDoc {

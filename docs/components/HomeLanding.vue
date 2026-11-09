@@ -5,6 +5,9 @@ import ServerStatus from './ServerStatus.vue'
 import NewsList from './NewsList.vue'
 import EventBanner from './EventBanner.vue'
 import BlogGallery from './BlogGallery.vue'
+import CommunitySection from './CommunitySection.vue'
+import BrandIcon from './BrandIcon.vue'
+import { DISCORD_URL } from '../data/site.js'
 
 const copied = ref(false)
 const heroSection = ref(null)
@@ -101,7 +104,10 @@ onUnmounted(() => heroObserver?.disconnect())
             </div>
             <div class="k-port"><span>PORT</span><strong>19132</strong></div>
             <p>Switch・スマホなどは、フレンド参加にも対応しています。</p>
-            <a :href="withBase('/guide/start')">端末別の詳しい参加方法を見る →</a>
+            <div class="k-connect-links">
+              <a :href="withBase('/guide/start')">端末別の詳しい参加方法を見る →</a>
+              <a :href="DISCORD_URL" target="_blank" rel="noopener">入れないときは Discord で質問 →</a>
+            </div>
           </div>
 
           <ol class="k-steps">
@@ -123,6 +129,9 @@ onUnmounted(() => heroObserver?.disconnect())
         <ServerStatus />
       </div>
     </section>
+
+    <!-- Discord・YouTube への案内（参加方法のすぐ下） -->
+    <CommunitySection />
 
     <section class="k-world">
       <div class="k-shell">
@@ -177,7 +186,12 @@ onUnmounted(() => heroObserver?.disconnect())
           <p class="k-kicker">YOUR STORY STARTS HERE</p>
           <h2>次の歴史をつくるのは、<br><em>あなたかもしれない。</em></h2>
         </div>
-        <a class="k-button k-button-primary" href="#join">建国鯖に参加する <span>→</span></a>
+        <div class="k-final-actions">
+          <a class="k-button k-button-primary" href="#join">建国鯖に参加する <span>→</span></a>
+          <a class="k-button k-button-ghost k-button-discord" :href="DISCORD_URL" target="_blank" rel="noopener">
+            <BrandIcon name="discord" /> Discordに参加
+          </a>
+        </div>
       </div>
     </section>
 
@@ -186,7 +200,12 @@ onUnmounted(() => heroObserver?.disconnect())
         <span class="k-live-dot"></span>
         <span><small>24H ONLINE</small><strong>建国鯖</strong></span>
       </div>
-      <a href="#join">参加する <span>→</span></a>
+      <div class="k-mobile-dock-actions">
+        <a class="k-dock-discord" :href="DISCORD_URL" target="_blank" rel="noopener" aria-label="Discordに参加">
+          <BrandIcon name="discord" />
+        </a>
+        <a class="k-dock-join" href="#join">参加する <span>→</span></a>
+      </div>
     </div>
   </main>
 </template>
