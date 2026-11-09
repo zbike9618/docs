@@ -162,3 +162,25 @@ const formatDate = (iso) =>
   }
 }
 </style>
+
+<style>
+/* ライトモード（html に .dark が無いとき）。上の暗い配色が基本なので、ライトのときだけ明るい札にする */
+html:not(.dark) .event-banner {
+  background: linear-gradient(135deg, #ffffff 0%, #f7f3ec 100%);
+  border-color: #e1ddd5;
+  box-shadow: 0 8px 24px rgba(16, 28, 45, 0.08);
+}
+html:not(.dark) .event-banner:hover:not(.is-static) {
+  border-color: rgba(63, 95, 208, 0.45);
+  box-shadow: 0 14px 32px rgba(16, 28, 45, 0.12);
+}
+html:not(.dark) .event-banner.is-poll:hover {
+  border-color: rgba(35, 133, 90, 0.45);
+}
+html:not(.dark) .event-banner .event-content,
+html:not(.dark) .event-banner .title { color: #172033; text-shadow: none; }
+html:not(.dark) .event-banner .description { color: #4d5665; opacity: 1; }
+html:not(.dark) .event-banner .deadline { color: #6b7483; }
+html:not(.dark) .event-banner .badge { color: #3a57c4; background: rgba(63, 95, 208, 0.08); border-color: rgba(63, 95, 208, 0.3); }
+html:not(.dark) .event-banner.is-poll .badge { color: #1f7a52; background: rgba(35, 133, 90, 0.08); border-color: rgba(35, 133, 90, 0.3); }
+</style>

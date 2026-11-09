@@ -5,5 +5,9 @@ export const SITE_URL = 'https://www.gozakura.org'
 export const SITE_NAME = '建国鯖'
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/yuku5_icon.jpg`
 
+// コミュニティの入口。ナビのアイコン・トップの「COMMUNITY」・各ページ下の案内で使う
+export const DISCORD_URL = 'https://discord.gg/2Cx8Xm4ws6'
+export const YOUTUBE_URL = 'https://www.youtube.com/@Y-gozakura'
+
 // 本番（LXC）は '/'。GitHub Pages 用の pages ブランチのビルドだけ '/docs/'
 export const BASE = env.GITHUB_ACTIONS && !env.LXC_DEPLOY ? '/docs/' : '/'
