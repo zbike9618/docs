@@ -187,6 +187,7 @@ export default defineConfig({
       {
         text: 'サーバー状況',
         items: [
+          { text: 'プレイヤー数', link: '/players' },
           { text: '不具合情報', link: '/report/status' },
           { text: '処罰履歴', link: '/banlist/' }
         ]
