@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { withBase } from 'vitepress'
 import ServerStatus from './ServerStatus.vue'
+import PlayerActivity from './PlayerActivity.vue'
 import NewsList from './NewsList.vue'
 import EventBanner from './EventBanner.vue'
 import BlogGallery from './BlogGallery.vue'
@@ -127,6 +128,8 @@ onUnmounted(() => heroObserver?.disconnect())
         </div>
 
         <ServerStatus />
+        <!-- 人数の簡易版（直近7日間と、にぎわう時間帯）。夜中に来た人が「過疎」と思わないように -->
+        <PlayerActivity />
       </div>
     </section>
 

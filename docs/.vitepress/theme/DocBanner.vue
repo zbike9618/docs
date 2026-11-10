@@ -22,6 +22,9 @@ const section = computed(() => {
   if (path.startsWith('/report/')) {
     return { label: 'SERVER INTELLIGENCE', text: '現在確認されている不具合と稼働情報' }
   }
+  if (path.startsWith('/players')) {
+    return { label: 'SERVER ACTIVITY', text: 'いま何人いて、いつ人が多いのか' }
+  }
   if (path.startsWith('/banlist/')) {
     return { label: 'PUBLIC RECORDS', text: '公平な世界を守るための運営記録' }
   }
